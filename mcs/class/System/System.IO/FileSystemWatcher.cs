@@ -43,7 +43,7 @@ namespace System.IO {
 #if NET_2_0
 	[IODescription ("")]
 #endif
-	public class FileSystemWatcher : Component, ISupportInitialize {
+	public partial class FileSystemWatcher : Component, ISupportInitialize {
 
 		#region Fields
 
@@ -525,14 +525,6 @@ namespace System.IO {
 
 		#endregion // Events and Delegates
 
-		/* 0 -> not supported	*/
-		/* 1 -> windows		*/
-		/* 2 -> FAM		*/
-		/* 3 -> Kevent		*/
-		/* 4 -> gamin		*/
-		/* 5 -> inotify		*/
-		[MethodImplAttribute(MethodImplOptions.InternalCall)]
-		static extern int InternalSupportsFSW ();
 	}
 }
 

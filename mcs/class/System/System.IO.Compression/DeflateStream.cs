@@ -39,9 +39,10 @@ using MonoTouch;
 #endif
 
 namespace System.IO.Compression {
-	public class DeflateStream : Stream
+	public partial class DeflateStream : Stream
 	{
 		const int BufferSize = 4096;
+		[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
 		delegate int UnmanagedReadOrWrite (IntPtr buffer, int length, IntPtr data);
 		delegate int ReadMethod (byte[] array, int offset, int count);
 		delegate void WriteMethod (byte[] array, int offset, int count);
@@ -421,20 +422,6 @@ namespace System.IO.Compression {
 		const string LIBNAME = "MonoPosixHelper";
 #endif
 
-		[DllImport (LIBNAME)]
-		static extern IntPtr CreateZStream (CompressionMode compress, bool gzip, UnmanagedReadOrWrite feeder, IntPtr data);
-
-		[DllImport (LIBNAME)]
-		static extern int CloseZStream (IntPtr stream);
-
-		[DllImport (LIBNAME)]
-		static extern int Flush (IntPtr stream);
-
-		[DllImport (LIBNAME)]
-		static extern int ReadZStream (IntPtr stream, IntPtr buffer, int length);
-
-		[DllImport (LIBNAME)]
-		static extern int WriteZStream (IntPtr stream, IntPtr buffer, int length);
 	}
 }
 #endif

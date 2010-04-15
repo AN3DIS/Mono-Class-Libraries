@@ -123,11 +123,10 @@ namespace System.Net.Mail {
 			if (cfg != null) {
 				this.host = cfg.Network.Host;
 				this.port = cfg.Network.Port;
-#if false
 				TargetName = cfg.Network.TargetName;
 				if (this.TargetName == null)
 					TargetName = "SMTPSVC/" + (host != null ? host : "");
-#endif
+
 				
 				if (cfg.Network.UserName != null) {
 					string password = String.Empty;
@@ -141,6 +140,9 @@ namespace System.Net.Mail {
 				if (cfg.From != null)
 					defaultFrom = new MailAddress (cfg.From);
 			}
+#else
+			// Just to eliminate the warning, this codepath does not end up in production.
+			defaultFrom = null;
 #endif
 
 			if (!String.IsNullOrEmpty (host))
@@ -682,6 +684,7 @@ namespace System.Net.Mail {
 				SendHeader ("Sender", EncodeAddress (message.Sender));
 			if (message.ReplyToList.Count > 0)
 				SendHeader ("Reply-To", EncodeAddresses (message.ReplyToList));
+
 #if NET_4_0
 			foreach (string s in message.Headers.AllKeys)
 				SendHeader (s, ContentType.EncodeSubjectRFC2047 (message.Headers [s], message.HeadersEncoding));

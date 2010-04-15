@@ -37,20 +37,8 @@ using System.IO;
 namespace System.Threading {
 
 	[ComVisible (false)]
-	public sealed class Semaphore : WaitHandle {
+	public sealed partial class Semaphore : WaitHandle {
 
-		[MethodImplAttribute(MethodImplOptions.InternalCall)]
-		private static extern IntPtr CreateSemaphore_internal (
-			int initialCount, int maximumCount, string name,
-			out bool createdNew);
-
-		[MethodImplAttribute(MethodImplOptions.InternalCall)]
-		private static extern int ReleaseSemaphore_internal (
-			IntPtr handle, int releaseCount, out bool fail);
-
-		[MethodImplAttribute (MethodImplOptions.InternalCall)]
-		private static extern IntPtr OpenSemaphore_internal (string name, SemaphoreRights rights, out MonoIOError error);
-		
 		private Semaphore (IntPtr handle)
 		{
 			Handle = handle;

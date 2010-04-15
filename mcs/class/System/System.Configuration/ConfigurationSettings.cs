@@ -125,7 +125,7 @@ namespace System.Configuration
 	// class DefaultConfig: read configuration from machine.config file and application
 	// config file if available.
 	//
-	class DefaultConfig : IConfigurationSystem
+	partial class DefaultConfig : IConfigurationSystem
 	{
 #if !TARGET_JVM
         	static readonly DefaultConfig instance = new DefaultConfig ();        
@@ -201,14 +201,10 @@ namespace System.Configuration
 			return System.Runtime.InteropServices.RuntimeEnvironment.SystemConfigurationFile;
 		}
 #else
-		[MethodImplAttribute(MethodImplOptions.InternalCall)]
-		extern private static string get_bundled_machine_config ();
 		internal static string GetBundledMachineConfig ()
 		{
 			return get_bundled_machine_config ();
 		}
-		[MethodImplAttribute(MethodImplOptions.InternalCall)]
-		extern private static string get_machine_config_path ();
 		internal static string GetMachineConfigPath ()
 		{
 			return get_machine_config_path ();
@@ -240,7 +236,9 @@ namespace System.Configuration
 		public readonly string TypeName;
 		public readonly bool AllowLocation;
 		public readonly AllowDefinition AllowDefinition;
+#if XML_DEP
 		public string FileName;
+#endif
 		public readonly bool RequirePermission;
 
 		public SectionData (string sectionName, string typeName,
@@ -253,7 +251,6 @@ namespace System.Configuration
 			RequirePermission = requirePermission;
 		}
 	}
-
 
 	class ConfigurationData
 	{
@@ -727,7 +724,6 @@ namespace System.Configuration
 					continue;
 				}
 				
-
 				ThrowException ("Unrecognized element: " + reader.Name, reader);
 			}
 		}
@@ -775,5 +771,4 @@ namespace System.Configuration
 #endif
 	}
 }
-
 

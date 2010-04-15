@@ -28,6 +28,7 @@
 //
 #if NET_2_0
 using System;
+using System.IO;
 using System.Text;
 using System.Diagnostics;
 using System.Globalization;
@@ -38,7 +39,7 @@ using System.Runtime.InteropServices;
 
 namespace System.Net.NetworkInformation {
 	[MonoTODO ("IPv6 support is missing")]
-	public class Ping : Component, IDisposable
+	public partial class Ping : Component, IDisposable
 	{
 		[StructLayout(LayoutKind.Sequential)]
 		struct cap_user_header_t
@@ -56,7 +57,12 @@ namespace System.Net.NetworkInformation {
 		}
 		
 		const int DefaultCount = 1;
-		const string PingBinPath = "/bin/ping";
+		static readonly string [] PingBinPaths = new string [] {
+			"/bin/ping",
+			"/sbin/ping",
+			"/usr/sbin/ping"
+		};
+		static readonly string PingBinPath;
 		const int default_timeout = 4000; // 4 sec.
 		const int identifier = 1; // no need to be const, but there's no place to change it.
 
@@ -67,7 +73,6 @@ namespace System.Net.NetworkInformation {
 		static readonly byte [] default_buffer = new byte [0];
 		static bool canSendPrivileged;
 		
-
 		BackgroundWorker worker;
 		object user_async_state;
 		
@@ -79,18 +84,26 @@ namespace System.Net.NetworkInformation {
 				CheckLinuxCapabilities ();
 				if (!canSendPrivileged && WindowsIdentity.GetCurrent ().Name == "root")
 					canSendPrivileged = true;
+			
+				// Since different Unix systems can have different path to bin, we try some
+				// of the known ones.
+				foreach (string ping_path in PingBinPaths)
+					if (File.Exists (ping_path)) {
+						PingBinPath = ping_path;
+						break;
+					}
 			}
 			else
 				canSendPrivileged = true;
+
+			if (PingBinPath == null)
+				PingBinPath = "/bin/ping"; // default, fallback value
 		}
 		
 		public Ping ()
 		{
 		}
   
-		[DllImport ("libc", EntryPoint="capget")]
-		static extern int capget (ref cap_user_header_t header, ref cap_user_data_t data);
-
 		static void CheckLinuxCapabilities ()
 		{
 			try {
@@ -271,7 +284,6 @@ namespace System.Net.NetworkInformation {
 			ping.StartInfo.RedirectStandardOutput = true;
 			ping.StartInfo.RedirectStandardError = true;
 
-			DateTime start = DateTime.UtcNow;
 			try {
 				ping.Start ();
 

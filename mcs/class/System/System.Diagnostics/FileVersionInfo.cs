@@ -37,7 +37,7 @@ using System.Text;
 namespace System.Diagnostics {
 
 	[PermissionSet (SecurityAction.LinkDemand, Unrestricted = true)]
-	public sealed class FileVersionInfo {
+	public sealed partial class FileVersionInfo {
 		/* There is no public constructor for this class, it
 		 * is initialised by the runtime.  All the private
 		 * variables here are looked up by name, so dont
@@ -121,7 +121,6 @@ namespace System.Diagnostics {
 			productbuildpart=0;
 			productprivatepart=0;
 		}
-		
 		
 		public string Comments {
 			get {
@@ -290,9 +289,6 @@ namespace System.Diagnostics {
 			}
 		}
 
-		[MethodImplAttribute(MethodImplOptions.InternalCall)]
-		private extern void GetVersionInfo_internal(string fileName);
-		
 		public static FileVersionInfo GetVersionInfo (string fileName)
 		{
 #if !NET_2_1

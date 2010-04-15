@@ -34,39 +34,13 @@ using System.Runtime.CompilerServices;
 namespace System.Diagnostics 
 {
 	[PermissionSet (SecurityAction.LinkDemand, Unrestricted = true)]
-	public sealed class PerformanceCounterCategory 
+	public sealed partial class PerformanceCounterCategory 
 	{
 		private string categoryName;
 		private string machineName;
 #if NET_2_0
 		private PerformanceCounterCategoryType type = PerformanceCounterCategoryType.Unknown;
 #endif		
-
-		[MethodImplAttribute (MethodImplOptions.InternalCall)]
-		static extern bool CategoryDelete (string name);
-
-		[MethodImplAttribute (MethodImplOptions.InternalCall)]
-		static extern string CategoryHelpInternal (string category, string machine);
-
-		/* this icall allows a null counter and it will just search for the category */
-		[MethodImplAttribute (MethodImplOptions.InternalCall)]
-		static extern bool CounterCategoryExists (string counter, string category, string machine);
-
-		[MethodImplAttribute (MethodImplOptions.InternalCall)]
-		static extern bool Create (string categoryName, string categoryHelp,
-			PerformanceCounterCategoryType categoryType, CounterCreationData[] items);
-
-		[MethodImplAttribute (MethodImplOptions.InternalCall)]
-		static extern int InstanceExistsInternal (string instance, string category, string machine);
-
-		[MethodImplAttribute (MethodImplOptions.InternalCall)]
-		static extern string[] GetCategoryNames (string machine);
-
-		[MethodImplAttribute (MethodImplOptions.InternalCall)]
-		static extern string[] GetCounterNames (string category, string machine);
-
-		[MethodImplAttribute (MethodImplOptions.InternalCall)]
-		static extern string[] GetInstanceNames (string category, string machine);
 
 		static void CheckCategory (string categoryName) {
 			if (categoryName == null)

@@ -66,18 +66,12 @@ using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading;
-#if NET_2_0
 using System.Net.Cache;
-#endif
 
 namespace System.Net 
 {
 	[ComVisible(true)]
-	public
-#if !NET_2_0
-	sealed
-#endif
-	class WebClient : Component
+	public class WebClient : Component
 	{
 		static readonly string urlEncodedCType = "application/x-www-form-urlencoded";
 		static byte [] hexBytes;
@@ -88,12 +82,10 @@ namespace System.Net
 		string baseString;
 		NameValueCollection queryString;
 		bool is_busy;
-#if NET_2_0
 		bool async;
 		Thread async_thread;
 		Encoding encoding = Encoding.Default;
 		IWebProxy proxy;
-#endif
 
 		// Constructors
 		static WebClient ()
@@ -133,7 +125,6 @@ namespace System.Net
 			}
 		}
 
-#if NET_2_0
 		static Exception GetMustImplement ()
 		{
 			return new NotImplementedException ();
@@ -160,7 +151,6 @@ namespace System.Net
 				throw GetMustImplement ();
 			}
 		}
-#endif
 		
 		public ICredentials Credentials {
 			get { return credentials; }
@@ -191,7 +181,6 @@ namespace System.Net
 			get { return responseHeaders; }
 		}
 
-#if NET_2_0
 		public Encoding Encoding {
 			get { return encoding; }
 			set {
@@ -205,18 +194,10 @@ namespace System.Net
 			get { return proxy; }
 			set { proxy = value; }
 		}
-#endif
 
-#if NET_2_0
 		public bool IsBusy {
 			get { return is_busy; } 
 		}
-#else
-		bool IsBusy {
-			get { return is_busy; }
-		}
-#endif
-
 		// Methods
 
 		void CheckBusy ()
@@ -237,29 +218,20 @@ namespace System.Net
 
 		public byte [] DownloadData (string address)
 		{
-#if NET_2_0
 			if (address == null)
 				throw new ArgumentNullException ("address");
-#endif
 
 			return DownloadData (CreateUri (address));
 		}
 
-#if NET_2_0
-		public
-#endif
-		byte [] DownloadData (Uri address)
+		public byte [] DownloadData (Uri address)
 		{
-#if NET_2_0
 			if (address == null)
 				throw new ArgumentNullException ("address");
-#endif
 
 			try {
 				SetBusy ();
-#if NET_2_0				
 				async = false;
-#endif				
 				return DownloadDataCore (address, null);
 			} finally {
 				is_busy = false;
@@ -279,7 +251,7 @@ namespace System.Net
 				if (request != null)
 					request.Abort ();
 				throw;
-			} catch (WebException wexc) {
+			} catch (WebException) {
 				throw;
 			} catch (Exception ex) {
 				throw new WebException ("An error occurred " +
@@ -291,33 +263,24 @@ namespace System.Net
 
 		public void DownloadFile (string address, string fileName)
 		{
-#if NET_2_0
 			if (address == null)
 				throw new ArgumentNullException ("address");
-#endif
 
 			DownloadFile (CreateUri (address), fileName);
 		}
 
-#if NET_2_0
-		public
-#endif
-		void DownloadFile (Uri address, string fileName)
+		public void DownloadFile (Uri address, string fileName)
 		{
-#if NET_2_0
 			if (address == null)
 				throw new ArgumentNullException ("address");
 			if (fileName == null)
 				throw new ArgumentNullException ("fileName");
-#endif
 
 			try {
 				SetBusy ();
-#if NET_2_0				
 				async = false;
-#endif				
 				DownloadFileCore (address, fileName, null);
-			} catch (WebException wexc) {
+			} catch (WebException) {
 				throw;
 			} catch (Exception ex) {
 				throw new WebException ("An error occurred " +
@@ -342,18 +305,14 @@ namespace System.Net
 					byte [] buffer = new byte [length];
 					
 					int nread = 0;
-#if NET_2_0
 					long notify_total = 0;
-#endif					
 					while ((nread = st.Read (buffer, 0, length)) != 0){
-#if NET_2_0
 						if (async){
 							notify_total += nread;
 							OnDownloadProgressChanged (
 								new DownloadProgressChangedEventArgs (notify_total, response.ContentLength, userToken));
 												      
 						}
-#endif
 						f.Write (buffer, 0, nread);
 					}
 				} catch (ThreadInterruptedException){
@@ -368,34 +327,24 @@ namespace System.Net
 
 		public Stream OpenRead (string address)
 		{
-#if NET_2_0
 			if (address == null)
 				throw new ArgumentNullException ("address");
-#endif
-
 			return OpenRead (CreateUri (address));
 		}
 
-#if NET_2_0
-		public
-#endif
-		Stream OpenRead (Uri address)
+		public Stream OpenRead (Uri address)
 		{
-#if NET_2_0
 			if (address == null)
 				throw new ArgumentNullException ("address");
-#endif
 
 			WebRequest request = null;
 			try {
 				SetBusy ();
-#if NET_2_0				
 				async = false;
-#endif				
 				request = SetupRequest (address);
 				WebResponse response = GetWebResponse (request);
 				return response.GetResponseStream ();
-			} catch (WebException wexc) {
+			} catch (WebException) {
 				throw;
 			} catch (Exception ex) {
 				throw new WebException ("An error occurred " +
@@ -409,50 +358,36 @@ namespace System.Net
 
 		public Stream OpenWrite (string address)
 		{
-#if NET_2_0
 			if (address == null)
 				throw new ArgumentNullException ("address");
-#endif
 
 			return OpenWrite (CreateUri (address));
 		}
 		
 		public Stream OpenWrite (string address, string method)
 		{
-#if NET_2_0
 			if (address == null)
 				throw new ArgumentNullException ("address");
-#endif
 
 			return OpenWrite (CreateUri (address), method);
 		}
 
-#if NET_2_0
-		public
-#endif
-		Stream OpenWrite (Uri address)
+		public Stream OpenWrite (Uri address)
 		{
 			return OpenWrite (address, (string) null);
 		}
 
-#if NET_2_0
-		public
-#endif
-		Stream OpenWrite (Uri address, string method)
+		public Stream OpenWrite (Uri address, string method)
 		{
-#if NET_2_0
 			if (address == null)
 				throw new ArgumentNullException ("address");
-#endif
 
 			try {
 				SetBusy ();
-#if NET_2_0				
 				async = false;
-#endif				
 				WebRequest request = SetupRequest (address, method, true);
 				return request.GetRequestStream ();
-			} catch (WebException wexc) {
+			} catch (WebException) {
 				throw;
 			} catch (Exception ex) {
 				throw new WebException ("An error occurred " +
@@ -467,10 +402,9 @@ namespace System.Net
 			if (method != null)
 				return method;
 
-#if NET_2_0
 			if (address.Scheme == Uri.UriSchemeFtp)
 				return (is_upload) ? "STOR" : "RETR";
-#endif
+
 			return (is_upload) ? "POST" : "GET";
 		}
 
@@ -478,49 +412,35 @@ namespace System.Net
 
 		public byte [] UploadData (string address, byte [] data)
 		{
-#if NET_2_0
 			if (address == null)
 				throw new ArgumentNullException ("address");
-#endif
 
 			return UploadData (CreateUri (address), data);
 		}
 		
 		public byte [] UploadData (string address, string method, byte [] data)
 		{
-#if NET_2_0
 			if (address == null)
 				throw new ArgumentNullException ("address");
-#endif
 
 			return UploadData (CreateUri (address), method, data);
 		}
 
-#if NET_2_0
-		public
-#endif
-		byte [] UploadData (Uri address, byte [] data)
+		public byte [] UploadData (Uri address, byte [] data)
 		{
 			return UploadData (address, (string) null, data);
 		}
 
-#if NET_2_0
-		public
-#endif
-		byte [] UploadData (Uri address, string method, byte [] data)
+		public byte [] UploadData (Uri address, string method, byte [] data)
 		{
-#if NET_2_0
 			if (address == null)
 				throw new ArgumentNullException ("address");
 			if (data == null)
 				throw new ArgumentNullException ("data");
-#endif
 
 			try {
 				SetBusy ();
-#if NET_2_0				
 				async = false;
-#endif				
 				return UploadDataCore (address, method, data, null);
 			} catch (WebException) {
 				throw;
@@ -534,13 +454,6 @@ namespace System.Net
 
 		byte [] UploadDataCore (Uri address, string method, byte [] data, object userToken)
 		{
-#if ONLY_1_1
-			if (address == null)
-				throw new ArgumentNullException ("address");
-			if (data == null)
-				throw new ArgumentNullException ("data");
-#endif
-
 			WebRequest request = SetupRequest (address, method, true);
 			try {
 				int contentLength = data.Length;
@@ -563,18 +476,13 @@ namespace System.Net
 
 		public byte [] UploadFile (string address, string fileName)
 		{
-#if NET_2_0
 			if (address == null)
 				throw new ArgumentNullException ("address");
-#endif
 
 			return UploadFile (CreateUri (address), fileName);
 		}
 
-#if NET_2_0
-		public
-#endif
-		byte [] UploadFile (Uri address, string fileName)
+		public byte [] UploadFile (Uri address, string fileName)
 		{
 			return UploadFile (address, (string) null, fileName);
 		}
@@ -584,25 +492,18 @@ namespace System.Net
 			return UploadFile (CreateUri (address), method, fileName);
 		}
 
-#if NET_2_0
-		public
-#endif
-		byte [] UploadFile (Uri address, string method, string fileName)
+		public byte [] UploadFile (Uri address, string method, string fileName)
 		{
-#if NET_2_0
 			if (address == null)
 				throw new ArgumentNullException ("address");
 			if (fileName == null)
 				throw new ArgumentNullException ("fileName");
-#endif
 
 			try {
 				SetBusy ();
-#if NET_2_0				
 				async = false;
-#endif				
 				return UploadFileCore (address, method, fileName, null);
-			} catch (WebException wexc) {
+			} catch (WebException) {
 				throw;
 			} catch (Exception ex) {
 				throw new WebException ("An error occurred " +
@@ -614,11 +515,6 @@ namespace System.Net
 
 		byte [] UploadFileCore (Uri address, string method, string fileName, object userToken)
 		{
-#if ONLY_1_1
-			if (address == null)
-				throw new ArgumentNullException ("address");
-#endif
-
 			string fileCType = Headers ["Content-Type"];
 			if (fileCType != null) {
 				string lower = fileCType.ToLower ();
@@ -681,51 +577,36 @@ namespace System.Net
 		
 		public byte[] UploadValues (string address, NameValueCollection data)
 		{
-#if NET_2_0
 			if (address == null)
 				throw new ArgumentNullException ("address");
-#endif
 
 			return UploadValues (CreateUri (address), data);
 		}
 		
 		public byte[] UploadValues (string address, string method, NameValueCollection data)
 		{
-#if NET_2_0
 			if (address == null)
 				throw new ArgumentNullException ("address");
-#endif
-
 			return UploadValues (CreateUri (address), method, data);
 		}
 
-#if NET_2_0
-		public
-#endif
-		byte[] UploadValues (Uri address, NameValueCollection data)
+		public byte[] UploadValues (Uri address, NameValueCollection data)
 		{
 			return UploadValues (address, (string) null, data);
 		}
 
-#if NET_2_0
-		public
-#endif
-		byte[] UploadValues (Uri address, string method, NameValueCollection data)
+		public byte[] UploadValues (Uri address, string method, NameValueCollection data)
 		{
-#if NET_2_0
 			if (address == null)
 				throw new ArgumentNullException ("address");
 			if (data == null)
 				throw new ArgumentNullException ("data");
-#endif
 
 			try {
 				SetBusy ();
-#if NET_2_0				
 				async = false;
-#endif				
 				return UploadValuesCore (address, method, data, null);
-			} catch (WebException wexc) {
+			} catch (WebException) {
 				throw;
 			} catch (Exception ex) {
 				throw new WebException ("An error occurred " +
@@ -737,11 +618,6 @@ namespace System.Net
 
 		byte[] UploadValuesCore (Uri uri, string method, NameValueCollection data, object userToken)
 		{
-#if ONLY_1_1
-			if (data == null)
-				throw new ArgumentNullException ("data");
-#endif
-
 			string cType = Headers ["Content-Type"];
 			if (cType != null && String.Compare (cType, urlEncodedCType, true) != 0)
 				throw new WebException ("Content-Type header cannot be changed from its default " +
@@ -780,7 +656,6 @@ namespace System.Net
 			}
 		}
 
-#if NET_2_0
 		public string DownloadString (string address)
 		{
 			if (address == null)
@@ -852,42 +727,40 @@ namespace System.Net
 		public event UploadProgressChangedEventHandler UploadProgressChanged;
 		public event UploadStringCompletedEventHandler UploadStringCompleted;
 		public event UploadValuesCompletedEventHandler UploadValuesCompleted;
-#endif
 
 		Uri CreateUri (string address)
 		{
-#if ONLY_1_1
+			Uri uri;
 			try {
-				return MakeUri (address);
-			} catch (Exception ex) {
-				throw new WebException ("An error occurred " +
-					"performing a WebClient request.", ex);
+				if (baseAddress == null)
+					uri = new Uri (address);
+				else
+					uri = new Uri (baseAddress, address);
+				return CreateUri (uri);
+			} catch {
 			}
-#else
-			return MakeUri (address);
-#endif
+			return new Uri (Path.GetFullPath (address));
 		}
 
-#if NET_2_0
 		Uri CreateUri (Uri address)
 		{
-			string query = address.Query;
+			Uri result = address;
+			if (baseAddress != null && !result.IsAbsoluteUri) {
+				try {
+					result = new Uri (baseAddress, result.OriginalString);
+				} catch {
+					return result; // Not much we can do here.
+				}
+			}
+
+			string query = result.Query;
 			if (String.IsNullOrEmpty (query))
 				query = GetQueryString (true);
-
-			if (baseAddress == null && query == null)
-				return address;
-
-			if (baseAddress == null)
-				return new Uri (address.ToString () + query, (query != null));
-
-			if (query == null)
-				return new Uri (baseAddress, address.ToString ());
-
-			return new Uri (baseAddress, address.ToString () + query, (query != null));
-
+			UriBuilder builder = new UriBuilder (address);
+			if (!String.IsNullOrEmpty (query))
+				builder.Query = query.Substring (1);
+			return builder.Uri;
 		}
-#endif
 
 		string GetQueryString (bool add_qmark)
 		{
@@ -910,39 +783,11 @@ namespace System.Net
 			return sb.ToString ();
 		}
 
-		Uri MakeUri (string path)
-		{
-			string query = GetQueryString (true);
-			if (baseAddress == null && query == null) {
-				try {
-					return new Uri (path);
-#if NET_2_0
-				} catch (ArgumentNullException) {
-					path = Path.GetFullPath (path);
-					return new Uri ("file://" + path);
-#endif
-				} catch (UriFormatException) {
-					path = Path.GetFullPath (path);
-					return new Uri ("file://" + path);
-				}
-			}
-
-			if (baseAddress == null)
-				return new Uri (path + query, (query != null));
-
-			if (query == null)
-				return new Uri (baseAddress, path);
-
-			return new Uri (baseAddress, path + query, (query != null));
-		}
-		
 		WebRequest SetupRequest (Uri uri)
 		{
 			WebRequest request = GetWebRequest (uri);
-#if NET_2_0
 			if (Proxy != null)
 				request.Proxy = Proxy;
-#endif
 			request.Credentials = credentials;
 
 			// Special headers. These are properties of HttpWebRequest.
@@ -1013,12 +858,10 @@ namespace System.Net
 					offset += nread;
 					size -= nread;
 				}
-#if NET_2_0
 				if (async){
 //					total += nread;
 					OnDownloadProgressChanged (new DownloadProgressChangedEventArgs (nread, length, userToken));
 				}
-#endif
 			}
 
 			if (nolength)
@@ -1081,7 +924,6 @@ namespace System.Net
 			}
 		}
 
-#if NET_2_0
 		public void CancelAsync ()
 		{
 			lock (this){
@@ -1546,20 +1388,13 @@ namespace System.Net
 			responseHeaders = response.Headers;
 			return response;
 		}
-#endif
 
-#if NET_2_0
-		protected virtual
-#endif
-		WebRequest GetWebRequest (Uri address)
+		protected virtual WebRequest GetWebRequest (Uri address)
 		{
 			return WebRequest.Create (address);
 		}
 
-#if NET_2_0
-		protected virtual
-#endif
-		WebResponse GetWebResponse (WebRequest request)
+		protected virtual WebResponse GetWebResponse (WebRequest request)
 		{
 			WebResponse response = request.GetResponse ();
 			responseHeaders = response.Headers;

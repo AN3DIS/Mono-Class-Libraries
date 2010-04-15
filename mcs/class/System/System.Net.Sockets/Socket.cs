@@ -36,6 +36,7 @@
 using System;
 using System.Net;
 using System.Collections;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -43,11 +44,9 @@ using System.Reflection;
 using System.IO;
 using System.Net.Configuration;
 using System.Text;
-
-#if NET_2_0
-using System.Collections.Generic;
-using System.Net.NetworkInformation;
 using System.Timers;
+#if !MOONLIGHT
+using System.Net.NetworkInformation;
 #endif
 
 namespace System.Net.Sockets 
@@ -595,7 +594,6 @@ namespace System.Net.Sockets
 			}
 		}
 			
-
 		private Queue readQ = new Queue (2);
 		private Queue writeQ = new Queue (2);
 
@@ -606,7 +604,6 @@ namespace System.Net.Sockets
 		private bool useoverlappedIO;
 #endif
 		
-
 		static void AddSockets (ArrayList sockets, IList list, string name)
 		{
 			if (list != null) {
@@ -620,10 +617,6 @@ namespace System.Net.Sockets
 			sockets.Add (null);
 		}
 #if !TARGET_JVM
-		[MethodImplAttribute(MethodImplOptions.InternalCall)]
-		private extern static void Select_internal (ref Socket [] sockets,
-							int microSeconds,
-							out int error);
 #endif
 		public static void Select (IList checkRead, IList checkWrite, IList checkError, int microSeconds)
 		{
@@ -664,7 +657,6 @@ namespace System.Net.Sockets
 			IList currentList = checkRead;
 			int currentIdx = 0;
 			for (int i = 0; i < count; i++) {
-				Socket cur_sock;
 				Socket sock = sockets [i];
 				if (sock == null) { // separator
 					if (currentList != null) {
@@ -685,8 +677,8 @@ namespace System.Net.Sockets
 				}
 
 				// Remove non-signaled sockets before the current one
-				int max = currentList.Count;
-				while ((cur_sock = (Socket) currentList [currentIdx]) != sock) {
+				//int max = currentList.Count;
+				while (((Socket) currentList [currentIdx]) != sock) {
 					currentList.RemoveAt (currentIdx);
 				}
 				currentIdx++;
@@ -734,7 +726,6 @@ namespace System.Net.Sockets
 #endif
 		}
 
-
 #if NET_2_0
 		[MonoTODO]
 		public Socket (SocketInformation socketInformation)
@@ -762,8 +753,6 @@ namespace System.Net.Sockets
 
 #if !TARGET_JVM
 		// Returns the amount of data waiting to be read on socket
-		[MethodImplAttribute(MethodImplOptions.InternalCall)]
-		private extern static int Available_internal(IntPtr socket, out int error);
 #endif
 
 		public int Available {
@@ -781,7 +770,6 @@ namespace System.Net.Sockets
 				return(ret);
 			}
 		}
-
 
 #if NET_2_0
 		public bool DontFragment {
@@ -948,7 +936,6 @@ namespace System.Net.Sockets
 			}
 		}
 		
-		
 		[MonoTODO ("This doesn't do anything on Mono yet")]
 		public bool UseOnlyOverlappedIO {
 			get {
@@ -968,8 +955,6 @@ namespace System.Net.Sockets
 
 #if !TARGET_JVM
 		// Returns the local endpoint details in addr and port
-		[MethodImplAttribute(MethodImplOptions.InternalCall)]
-		private extern static SocketAddress LocalEndPoint_internal(IntPtr socket, out int error);
 #endif
 
 		// Wish:  support non-IP endpoints.
@@ -1096,8 +1081,6 @@ namespace System.Net.Sockets
 #endif
 		
 		// Creates a new system socket, returning the handle
-		[MethodImplAttribute(MethodImplOptions.InternalCall)]
-		private extern static IntPtr Accept_internal(IntPtr sock, out int error, bool blocking);
 
 		public Socket Accept() {
 			if (disposed && closed)
@@ -1768,10 +1751,6 @@ namespace System.Net.Sockets
 		}
 
 		// Creates a new system socket, returning the handle
-		[MethodImplAttribute(MethodImplOptions.InternalCall)]
-		private extern static void Bind_internal(IntPtr sock,
-							 SocketAddress sa,
-							 out int error);
 
 		public void Bind(EndPoint local_end) {
 			if (disposed && closed)
@@ -1793,7 +1772,7 @@ namespace System.Net.Sockets
 			seed_endpoint = local_end;
 		}
 
-#if NET_2_0
+#if !MOONLIGHT
 		public bool ConnectAsync (SocketAsyncEventArgs e)
 		{
 			// NO check is made whether e != null in MS.NET (NRE is thrown in such case)
@@ -1836,11 +1815,10 @@ namespace System.Net.Sockets
 				throw new InvalidOperationException ();
 
 			/* FIXME: do non-blocking sockets Poll here? */
+			int error = 0;
 			foreach (IPAddress address in addresses) {
-				IPEndPoint iep = new IPEndPoint (address,
-								 port);
+				IPEndPoint iep = new IPEndPoint (address, port);
 				SocketAddress serial = iep.Serialize ();
-				int error = 0;
 				
 				Connect_internal (socket, serial, out error);
 				if (error == 0) {
@@ -1854,14 +1832,16 @@ namespace System.Net.Sockets
 				
 				if (!blocking) {
 					Poll (-1, SelectMode.SelectWrite);
-					int success = (int)GetSocketOption (SocketOptionLevel.Socket, SocketOptionName.Error);
-					if (success == 0) {
+					error = (int)GetSocketOption (SocketOptionLevel.Socket, SocketOptionName.Error);
+					if (error == 0) {
 						connected = true;
 						seed_endpoint = iep;
 						return;
 					}
 				}
 			}
+			if (error != 0)
+				throw new SocketException (error);
 		}
 
 		public void Connect (string host, int port)
@@ -1882,10 +1862,6 @@ namespace System.Net.Sockets
 			return true;
 		}
 #endif
-		[MethodImplAttribute(MethodImplOptions.InternalCall)]
-		private extern static void Disconnect_internal(IntPtr sock,
-							       bool reuse,
-							       out int error);
 
 		/* According to the docs, the MS runtime will throw
 		 * PlatformNotSupportedException if the platform is
@@ -2180,11 +2156,6 @@ namespace System.Net.Sockets
 			return req.Total;
 		}
 
-		[MethodImplAttribute(MethodImplOptions.InternalCall)]
-		private extern static void GetSocketOption_arr_internal(IntPtr socket,
-			SocketOptionLevel level, SocketOptionName name, ref byte[] byte_val,
-			out int error);
-
 		public void GetSocketOption (SocketOptionLevel optionLevel, SocketOptionName optionName, byte [] optionValue)
 		{
 			if (disposed && closed)
@@ -2222,9 +2193,6 @@ namespace System.Net.Sockets
 		// common options between UNIX and Winsock are FIONREAD,
 		// FIONBIO and SIOCATMARK. Anything else will depend on the
 		// system.
-		[MethodImplAttribute(MethodImplOptions.InternalCall)]
-		extern static int WSAIoctl (IntPtr sock, int ioctl_code, byte [] input,
-			byte [] output, out int error);
 
 		public int IOControl (int ioctl_code, byte [] in_value, byte [] out_value)
 		{
@@ -2256,10 +2224,6 @@ namespace System.Net.Sockets
 			throw new NotImplementedException ();
 		}
 #endif
-
-		[MethodImplAttribute(MethodImplOptions.InternalCall)]
-		private extern static void Listen_internal(IntPtr sock, int backlog,
-			out int error);
 
 		public void Listen (int backlog)
 		{
@@ -2423,12 +2387,6 @@ namespace System.Net.Sockets
 			return Receive_nochecks (buffer, offset, size, flags, out error);
 		}
 
-		[MethodImplAttribute (MethodImplOptions.InternalCall)]
-		private extern static int Receive_internal (IntPtr sock,
-							    WSABUF[] bufarray,
-							    SocketFlags flags,
-							    out int error);
-		
 		public int Receive (IList<ArraySegment<byte>> buffers)
 		{
 			int ret;
@@ -2571,15 +2529,6 @@ namespace System.Net.Sockets
 
 			return ReceiveFrom_nochecks (buffer, 0, size, flags, ref remoteEP);
 		}
-
-		[MethodImplAttribute(MethodImplOptions.InternalCall)]
-		private extern static int RecvFrom_internal(IntPtr sock,
-							    byte[] buffer,
-							    int offset,
-							    int count,
-							    SocketFlags flags,
-							    ref SocketAddress sockaddr,
-							    out int error);
 
 		public int ReceiveFrom (byte [] buffer, int offset, int size, SocketFlags flags,
 					ref EndPoint remoteEP)
@@ -2803,12 +2752,6 @@ namespace System.Net.Sockets
 			return Send_nochecks (buf, offset, size, flags, out error);
 		}
 
-		[MethodImplAttribute (MethodImplOptions.InternalCall)]
-		private extern static int Send_internal (IntPtr sock,
-							 WSABUF[] bufarray,
-							 SocketFlags flags,
-							 out int error);
-
 		public int Send (IList<ArraySegment<byte>> buffers)
 		{
 			int ret;
@@ -2882,9 +2825,6 @@ namespace System.Net.Sockets
 			errorCode = (SocketError)nativeError;
 			return(ret);
 		}
-
-		[MethodImplAttribute(MethodImplOptions.InternalCall)]
-		private extern static bool SendFile (IntPtr sock, string filename, byte [] pre_buffer, byte [] post_buffer, TransmitFileOptions flags);
 
 		public void SendFile (string fileName)
 		{
@@ -2979,15 +2919,6 @@ namespace System.Net.Sockets
 
 			return SendTo_nochecks (buffer, 0, size, flags, remote_end);
 		}
-
-		[MethodImplAttribute(MethodImplOptions.InternalCall)]
-		private extern static int SendTo_internal(IntPtr sock,
-							  byte[] buffer,
-							  int offset,
-							  int count,
-							  SocketFlags flags,
-							  SocketAddress sa,
-							  out int error);
 
 		public int SendTo (byte [] buffer, int offset, int size, SocketFlags flags,
 				   EndPoint remote_end)

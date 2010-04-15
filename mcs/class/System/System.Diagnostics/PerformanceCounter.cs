@@ -47,7 +47,7 @@ namespace System.Diagnostics {
 	[Designer ("Microsoft.VisualStudio.Install.PerformanceCounterDesigner, " + Consts.AssemblyMicrosoft_VisualStudio)]
 #endif
 	[InstallerType (typeof (PerformanceCounterInstaller))]
-	public sealed class PerformanceCounter : Component, ISupportInitialize 
+	public sealed partial class PerformanceCounter : Component, ISupportInitialize 
 	{
 
 		private string categoryName;
@@ -133,19 +133,6 @@ namespace System.Diagnostics {
 		{
 			this.machineName = machineName;
 		}
-
-		[MethodImplAttribute (MethodImplOptions.InternalCall)]
-		static extern IntPtr GetImpl (string category, string counter,
-				string instance, string machine, out PerformanceCounterType ctype, out bool custom);
-
-		[MethodImplAttribute (MethodImplOptions.InternalCall)]
-		static extern bool GetSample (IntPtr impl, bool only_value, out CounterSample sample);
-
-		[MethodImplAttribute (MethodImplOptions.InternalCall)]
-		static extern long UpdateValue (IntPtr impl, bool do_incr, long value);
-
-		[MethodImplAttribute (MethodImplOptions.InternalCall)]
-		static extern void FreeData (IntPtr impl);
 
 		/* the perf counter has changed, ensure it's valid and setup it to
 		 * be able to collect/update data

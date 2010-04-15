@@ -18,7 +18,7 @@ using System.ComponentModel;
 
 namespace System.IO.Ports
 {
-	class WinSerialStream : Stream, ISerialStream, IDisposable
+	partial class WinSerialStream : Stream, ISerialStream, IDisposable
 	{
 		// Windows API Constants
 		const uint GenericRead = 0x80000000;
@@ -59,20 +59,6 @@ namespace System.IO.Ports
 		ManualResetEvent read_event;
 		ManualResetEvent write_event;
 		Timeouts timeouts;
-
-		[DllImport("kernel32", SetLastError = true)]
-		static extern int CreateFile(string port_name, uint desired_access,
-				uint share_mode, uint security_attrs, uint creation, uint flags,
-				uint template);
-
-		[DllImport("kernel32", SetLastError = true)]
-		static extern bool SetupComm(int handle, int read_buffer_size, int write_buffer_size);
-
-		[DllImport("kernel32", SetLastError = true)]
-		static extern bool PurgeComm(int handle, uint flags);
-
-		[DllImport("kernel32", SetLastError = true)]
-		static extern bool SetCommTimeouts(int handle, Timeouts timeouts);
 
 		public WinSerialStream (string port_name, int baud_rate, int data_bits, Parity parity, StopBits sb,
 				bool dtr_enable, bool rts_enable, Handshake hs, int read_timeout, int write_timeout,
@@ -200,9 +186,6 @@ namespace System.IO.Ports
 			}
 		}
 
-		[DllImport("kernel32", SetLastError = true)]
-		static extern bool CloseHandle (int handle);
-
 		protected override void Dispose (bool disposing)
 		{
 			if (disposed)
@@ -247,13 +230,7 @@ namespace System.IO.Ports
 		}
 
 #if !TARGET_JVM
-		[DllImport("kernel32", SetLastError = true)]
-			static extern unsafe bool ReadFile (int handle, byte* buffer, int bytes_to_read,
-					out int bytes_read, IntPtr overlapped);
 
-		[DllImport("kernel32", SetLastError = true)]
-			static extern unsafe bool GetOverlappedResult (int handle, IntPtr overlapped,
-					ref int bytes_transfered, bool wait);
 #endif
 
 		public override int Read ([In, Out] byte [] buffer, int offset, int count)
@@ -292,9 +269,6 @@ namespace System.IO.Ports
 		}
 
 #if !TARGET_JVM
-		[DllImport("kernel32", SetLastError = true)]
-		static extern unsafe bool WriteFile (int handle, byte* buffer, int bytes_to_write,
-				out int bytes_written, IntPtr overlapped);
 #endif
 
 		public override void Write (byte [] buffer, int offset, int count)
@@ -329,12 +303,6 @@ namespace System.IO.Ports
 			if (bytes_written < count)
 				throw new TimeoutException ();
 		}
-
-		[DllImport("kernel32", SetLastError = true)]
-		static extern bool GetCommState (int handle, [Out] DCB dcb);
-
-		[DllImport ("kernel32", SetLastError=true)]
-		static extern bool SetCommState (int handle, DCB dcb);
 
 		public void SetAttributes (int baud_rate, Parity parity, int data_bits, StopBits bits, Handshake hs)
 		{
@@ -387,9 +355,6 @@ namespace System.IO.Ports
 				ReportIOError (null);
 		}
 
-		[DllImport ("kernel32", SetLastError=true)]
-		static extern bool ClearCommError (int handle, out uint errors, out CommStat stat);
-
 		public int BytesToRead {
 			get {
 				uint errors;
@@ -412,9 +377,6 @@ namespace System.IO.Ports
 			}
 		}
 
-		[DllImport ("kernel32", SetLastError=true)]
-		static extern bool GetCommModemStatus (int handle, out uint flags);
-
 		public SerialSignal GetSignals ()
 		{
 			uint flags;
@@ -432,9 +394,6 @@ namespace System.IO.Ports
 			return signals;
 		}
 		
-		[DllImport ("kernel32", SetLastError=true)]
-		static extern bool EscapeCommFunction (int handle, uint flags);
-
 		public void SetSignal (SerialSignal signal, bool value)
 		{
 			if (signal != SerialSignal.Rts && signal != SerialSignal.Dtr)
@@ -574,7 +533,7 @@ namespace System.IO.Ports
 	}
 
 	[StructLayout (LayoutKind.Sequential)]
-	class CommStat
+	struct CommStat
 	{
 		public uint flags;
 		public uint BytesIn;

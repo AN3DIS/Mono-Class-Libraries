@@ -52,7 +52,7 @@ namespace System.Diagnostics {
 #if NET_2_0
 	[MonitoringDescription ("Represents a system process")]
 #endif
-	public class Process : Component 
+	public partial class Process : Component 
 	{
 		[StructLayout(LayoutKind.Sequential)]
 		private struct ProcInfo 
@@ -130,9 +130,6 @@ namespace System.Diagnostics {
 
 		}
 
-		[MethodImplAttribute(MethodImplOptions.InternalCall)]
-		private extern static int ExitCode_internal(IntPtr handle);
-
 		[DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden), Browsable (false)]
 		[MonitoringDescription ("The exit code of the process.")]
 		public int ExitCode {
@@ -149,12 +146,6 @@ namespace System.Diagnostics {
 			}
 		}
 
-		/* Returns the process start time in Windows file
-		 * times (ticks from DateTime(1/1/1601 00:00 GMT))
-		 */
-		[MethodImplAttribute(MethodImplOptions.InternalCall)]
-		private extern static long ExitTime_internal(IntPtr handle);
-		
 		[DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden), Browsable (false)]
 		[MonitoringDescription ("The exit time of the process.")]
 		public DateTime ExitTime {
@@ -251,11 +242,6 @@ namespace System.Diagnostics {
 			}
 		}
 
-		[MethodImplAttribute(MethodImplOptions.InternalCall)]
-		private extern static bool GetWorkingSet_internal(IntPtr handle, out int min, out int max);
-		[MethodImplAttribute(MethodImplOptions.InternalCall)]
-		private extern static bool SetWorkingSet_internal(IntPtr handle, int min, int max, bool use_min);
-
 		/* LAMESPEC: why is this an IntPtr not a plain int? */
 		[DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
 		[MonitoringDescription ("The maximum working set for this process.")]
@@ -315,12 +301,6 @@ namespace System.Diagnostics {
 			}
 		}
 
-		/* Returns the list of process modules.  The main module is
-		 * element 0.
-		 */
-		[MethodImplAttribute(MethodImplOptions.InternalCall)]
-		private extern ProcessModule[] GetModules_internal(IntPtr handle);
-
 		private ProcessModuleCollection module_collection;
 		
 		[DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden), Browsable (false)]
@@ -333,10 +313,6 @@ namespace System.Diagnostics {
 				return(module_collection);
 			}
 		}
-
-		/* data type is from the MonoProcessData enum in mono-proclib.h in the runtime */
-		[MethodImplAttribute(MethodImplOptions.InternalCall)]
-		private extern static long GetProcessData (int pid, int data_type, out int error);
 
 		[MonoTODO]
 #if NET_2_0
@@ -512,12 +488,6 @@ namespace System.Diagnostics {
 			}
 		}
 
-		[MethodImplAttribute(MethodImplOptions.InternalCall)]
-		static extern int GetPriorityClass (IntPtr handle, out int error);
-
-		[MethodImplAttribute(MethodImplOptions.InternalCall)]
-		static extern bool SetPriorityClass (IntPtr handle, int priority, out int error);
-
 		[DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
 		[MonitoringDescription ("The amount of memory exclusively used by this process.")]
 #if NET_2_0
@@ -539,10 +509,6 @@ namespace System.Diagnostics {
 		}
 #endif
 
-		/* the meaning of type is as follows: 0: user, 1: system, 2: total */
-		[MethodImplAttribute(MethodImplOptions.InternalCall)]
-		private extern static long Times (IntPtr handle, int type);
-
 		[DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
 		[MonitoringDescription ("The amount of processing time spent in the OS core for this process.")]
 		public TimeSpan PrivilegedProcessorTime {
@@ -551,9 +517,6 @@ namespace System.Diagnostics {
 			}
 		}
 
-		[MethodImplAttribute(MethodImplOptions.InternalCall)]
-		private extern static string ProcessName_internal(IntPtr handle);
-		
 		private string process_name=null;
 		
 		[DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
@@ -680,12 +643,6 @@ namespace System.Diagnostics {
 			}
 		}
 
-		/* Returns the process start time in Windows file
-		 * times (ticks from DateTime(1/1/1601 00:00 GMT))
-		 */
-		[MethodImplAttribute(MethodImplOptions.InternalCall)]
-		private extern static long StartTime_internal(IntPtr handle);
-		
 		[DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
 		[MonitoringDescription ("The time this process started.")]
 		public DateTime StartTime {
@@ -787,9 +744,6 @@ namespace System.Diagnostics {
 			Dispose (true);
 		}
 
-		[MethodImplAttribute(MethodImplOptions.InternalCall)]
-		extern static bool Kill_internal (IntPtr handle, int signo);
-
 		/* int kill -> 1 KILL, 2 CloseMainWindow */
 		bool Close (int signo)
 		{
@@ -811,12 +765,6 @@ namespace System.Diagnostics {
 		[MonoTODO]
 		public static void EnterDebugMode() {
 		}
-
-		[MethodImplAttribute(MethodImplOptions.InternalCall)]
-		private extern static IntPtr GetProcess_internal(int pid);
-		
-		[MethodImplAttribute(MethodImplOptions.InternalCall)]
-		private extern static int GetPid_internal();
 
 		public static Process GetCurrentProcess()
 		{
@@ -849,9 +797,6 @@ namespace System.Diagnostics {
 
 			return GetProcessById (processId);
 		}
-
-		[MethodImplAttribute(MethodImplOptions.InternalCall)]
-		private extern static int[] GetProcesses_internal();
 
 		public static Process[] GetProcesses()
 		{
@@ -923,17 +868,6 @@ namespace System.Diagnostics {
 			// FIXME: should refresh any cached data we might have about
 			// the process (currently we have none).
 		}
-
-		[MethodImplAttribute(MethodImplOptions.InternalCall)]
-		private extern static bool ShellExecuteEx_internal(ProcessStartInfo startInfo,
-								   ref ProcInfo proc_info);
-
-		[MethodImplAttribute(MethodImplOptions.InternalCall)]
-		private extern static bool CreateProcess_internal(ProcessStartInfo startInfo,
-								  IntPtr stdin,
-								  IntPtr stdout,
-								  IntPtr stderr,
-								  ref ProcInfo proc_info);
 
 		private static bool Start_shell (ProcessStartInfo startInfo,
 						 Process process)
@@ -1246,12 +1180,6 @@ namespace System.Diagnostics {
 			return(base.ToString() + " (" + this.ProcessName + ")");
 		}
 
-		/* Waits up to ms milliseconds for process 'handle' to
-		 * exit.  ms can be <0 to mean wait forever.
-		 */
-		[MethodImplAttribute(MethodImplOptions.InternalCall)]
-		private extern bool WaitForExit_internal(IntPtr handle, int ms);
-
 		public void WaitForExit ()
 		{
 			WaitForExit (-1);
@@ -1290,12 +1218,6 @@ namespace System.Diagnostics {
 #endif
 			return WaitForExit_internal (process_handle, ms);
 		}
-
-		/* Waits up to ms milliseconds for process 'handle' to 
-		 * wait for input.  ms can be <0 to mean wait forever.
-		 */
-		[MethodImplAttribute(MethodImplOptions.InternalCall)]
-		private extern bool WaitForInputIdle_internal(IntPtr handle, int ms);
 
 		// The internal call is only implemented properly on Windows.
 		[MonoTODO]
@@ -1580,8 +1502,6 @@ namespace System.Diagnostics {
 		}
 
 		// Closes the system process handle
-		[MethodImplAttribute(MethodImplOptions.InternalCall)]
-		private extern void Process_free_internal(IntPtr handle);
 		
 		private bool disposed = false;
 		
@@ -1594,13 +1514,11 @@ namespace System.Diagnostics {
 				if(disposing) {
 					// Do stuff here
 					lock (this) {
-#if NET_2_0
 						/* These have open FileStreams on the pipes we are about to close */
 						if (async_output != null)
 							async_output.Close ();
 						if (async_error != null)
 							async_error.Close ();
-#endif
 					}
 				}
 				
@@ -1675,10 +1593,8 @@ namespace System.Diagnostics {
 			}
 		}
 
-		class ProcessWaitHandle : WaitHandle
+		partial class ProcessWaitHandle : WaitHandle
 		{
-			[MethodImplAttribute (MethodImplOptions.InternalCall)]
-			private extern static IntPtr ProcessHandle_duplicate (IntPtr handle);
 			
 			public ProcessWaitHandle (IntPtr handle)
 			{

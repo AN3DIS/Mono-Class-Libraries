@@ -26,7 +26,7 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-#if NET_2_0
+
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Globalization;
@@ -85,13 +85,8 @@ namespace System.Net.NetworkInformation {
 	// formatted like:
 	// http://www.linuxdevcenter.com/linux/2000/11/16/example5.html
 	// http://www.linuxdevcenter.com/linux/2000/11/16/example2.html
-	class MibIPGlobalProperties : IPGlobalProperties
+	partial class MibIPGlobalProperties : IPGlobalProperties
 	{
-		[DllImport ("libc")]
-		static extern int gethostname ([MarshalAs (UnmanagedType.LPArray, SizeParamIndex = 1)] byte [] name, int len);
-
-		[DllImport ("libc")]
-		static extern int getdomainname ([MarshalAs (UnmanagedType.LPArray, SizeParamIndex = 1)] byte [] name, int len);
 
 		public const string ProcDir = "/proc";
 		public const string CompatProcDir = "/usr/compat/linux/proc";
@@ -323,7 +318,7 @@ namespace System.Net.NetworkInformation {
 		}
 	}
 
-	class Win32IPGlobalProperties : IPGlobalProperties
+	partial class Win32IPGlobalProperties : IPGlobalProperties
 	{
 		public const int AF_INET = 2;
 		public const int AF_INET6 = 23;
@@ -550,33 +545,6 @@ namespace System.Net.NetworkInformation {
 
 		// PInvokes
 
-		[DllImport ("Iphlpapi.dll")]
-		static extern int GetTcpTable (byte [] pTcpTable, ref int pdwSize, bool bOrder);
-
-		[DllImport ("Iphlpapi.dll")]
-		static extern int GetTcp6Table (byte [] TcpTable, ref int SizePointer, bool Order);
-
-		[DllImport ("Iphlpapi.dll")]
-		static extern int GetUdpTable (byte [] pUdpTable, ref int pdwSize, bool bOrder);
-
-		[DllImport ("Iphlpapi.dll")]
-		static extern int GetUdp6Table (byte [] Udp6Table, ref int SizePointer, bool Order);
-
-		[DllImport ("Iphlpapi.dll")]
-		static extern int GetTcpStatisticsEx (out Win32_MIB_TCPSTATS pStats, int dwFamily);
-
-		[DllImport ("Iphlpapi.dll")]
-		static extern int GetUdpStatisticsEx (out Win32_MIB_UDPSTATS pStats, int dwFamily);
-
-		[DllImport ("Iphlpapi.dll")]
-		static extern int GetIcmpStatistics (out Win32_MIBICMPINFO pStats, int dwFamily);
-
-		[DllImport ("Iphlpapi.dll")]
-		static extern int GetIcmpStatisticsEx (out Win32_MIB_ICMP_EX pStats, int dwFamily);
-
-		[DllImport ("Iphlpapi.dll")]
-		static extern int GetIPStatisticsEx (out Win32_MIB_IPSTATS pStats, int dwFamily);
-
 		// Win32 structures
 
 		[StructLayout (LayoutKind.Explicit)]
@@ -585,12 +553,6 @@ namespace System.Net.NetworkInformation {
 			[FieldOffset (0)]
 			[MarshalAs ((short) UnmanagedType.U1, SizeConst = 16)]
 			public byte [] Bytes;
-			[FieldOffset (0)]
-			[MarshalAs ((short) UnmanagedType.U2, SizeConst = 8)]
-			public byte [] UInt16Array;
-			[FieldOffset (0)]
-			[MarshalAs ((short) UnmanagedType.U4, SizeConst = 4)]
-			public byte [] UInt32Array;
 		}
 
 		[StructLayout (LayoutKind.Sequential)]
@@ -663,5 +625,3 @@ namespace System.Net.NetworkInformation {
 		}
 	}
 }
-#endif
-

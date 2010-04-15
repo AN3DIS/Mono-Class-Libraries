@@ -35,14 +35,12 @@ using System.Runtime.CompilerServices;
 namespace System.Net.Sockets
 {
 	[Serializable]
-	public class SocketException : Win32Exception
+	public partial class SocketException : Win32Exception
 	{
 #if TARGET_JVM
 		public SocketException ()
 			: base (-2147467259)
 #else
-		[MethodImplAttribute (MethodImplOptions.InternalCall)]
-		private static extern int WSAGetLastError_internal ();
 		public SocketException ()
 			: base (WSAGetLastError_internal ())
 #endif
@@ -57,7 +55,6 @@ namespace System.Net.Sockets
 					StreamingContext context)
 			: base (info, context) {
 		}
-
 
 		internal SocketException (int error, string message)
 			: base (error, message)

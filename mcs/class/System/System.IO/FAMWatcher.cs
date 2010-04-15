@@ -68,7 +68,7 @@ namespace System.IO {
 		public Hashtable SubDirs;
 	}
 
-	class FAMWatcher : IFileWatcher
+	partial class FAMWatcher : IFileWatcher
 	{
 		static bool failed;
 		static FAMWatcher instance;
@@ -352,7 +352,6 @@ namespace System.IO {
 				} while (FAMPending (ref conn) > 0);
 			}
 
-
 			if (newdirs != null) {
 				int count = newdirs.Count;
 				for (int n = 0; n < count; n += 2) {
@@ -407,44 +406,6 @@ namespace System.IO {
 				return gamin_Pending (ref fc);
 			return fam_Pending (ref fc);
 		}
-
-
-		
-		[DllImport ("libfam.so.0", EntryPoint="FAMOpen")]
-		extern static int fam_Open (out FAMConnection fc);
-
-		[DllImport ("libfam.so.0", EntryPoint="FAMClose")]
-		extern static int fam_Close (ref FAMConnection fc);
-
-		[DllImport ("libfam.so.0", EntryPoint="FAMMonitorDirectory")]
-		extern static int fam_MonitorDirectory (ref FAMConnection fc, string filename,
-							out FAMRequest fr, IntPtr user_data);
-
-		[DllImport ("libfam.so.0", EntryPoint="FAMCancelMonitor")]
-		extern static int fam_CancelMonitor (ref FAMConnection fc, ref FAMRequest fr);
-
-		[DllImport ("libfam.so.0", EntryPoint="FAMPending")]
-		extern static int fam_Pending (ref FAMConnection fc);
-
-		[DllImport ("libgamin-1.so.0", EntryPoint="FAMOpen")]
-		extern static int gamin_Open (out FAMConnection fc);
-
-		[DllImport ("libgamin-1.so.0", EntryPoint="FAMClose")]
-		extern static int gamin_Close (ref FAMConnection fc);
-
-		[DllImport ("libgamin-1.so.0", EntryPoint="FAMMonitorDirectory")]
-		extern static int gamin_MonitorDirectory (ref FAMConnection fc, string filename,
-							out FAMRequest fr, IntPtr user_data);
-
-		[DllImport ("libgamin-1.so.0", EntryPoint="FAMCancelMonitor")]
-		extern static int gamin_CancelMonitor (ref FAMConnection fc, ref FAMRequest fr);
-
-		[DllImport ("libgamin-1.so.0", EntryPoint="FAMPending")]
-		extern static int gamin_Pending (ref FAMConnection fc);
-
-		[MethodImplAttribute(MethodImplOptions.InternalCall)]
-		extern static int InternalFAMNextEvent (ref FAMConnection fc, out string filename,
-							out int code, out int reqnum);
 
 	}
 }

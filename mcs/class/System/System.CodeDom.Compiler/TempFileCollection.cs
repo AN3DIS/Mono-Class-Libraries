@@ -39,7 +39,7 @@ namespace System.CodeDom.Compiler {
 	[Serializable]
 #endif
 	[PermissionSet (SecurityAction.LinkDemand, Unrestricted = true)]
-	public class TempFileCollection:ICollection, IEnumerable, IDisposable
+	public partial class TempFileCollection:ICollection, IEnumerable, IDisposable
 	{
 		Hashtable filehash;
 		string tempdir;
@@ -276,6 +276,5 @@ namespace System.CodeDom.Compiler {
 			Dispose(false);
 		}
 		
-		[DllImport ("libc")] private static extern int mkdir (string olpath, uint mode);
 	}
 }

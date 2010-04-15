@@ -92,7 +92,7 @@ namespace System.IO {
 		public int Watch;
 	}
 
-	class InotifyWatcher : IFileWatcher
+	partial class InotifyWatcher : IFileWatcher
 	{
 		static bool failed;
 		static InotifyWatcher instance;
@@ -610,20 +610,6 @@ namespace System.IO {
 			return AddWatch (fd, directory, mask);
 		}
 
-		[DllImport ("libc", EntryPoint="close")]
-		internal extern static int Close (IntPtr fd);
-
-		[DllImport ("libc", EntryPoint = "read")]
-		extern static int ReadFromFD (IntPtr fd, byte [] buffer, IntPtr length);
-
-		[MethodImplAttribute(MethodImplOptions.InternalCall)]
-		extern static IntPtr GetInotifyInstance ();
-
-		[MethodImplAttribute(MethodImplOptions.InternalCall)]
-		extern static int AddWatch (IntPtr fd, string name, InotifyMask mask);
-
-		[MethodImplAttribute(MethodImplOptions.InternalCall)]
-		extern static IntPtr RemoveWatch (IntPtr fd, int wd);
 	}
 }
 

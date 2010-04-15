@@ -34,7 +34,7 @@ using System.Runtime.InteropServices;
 
 namespace Mono.Audio
 {
-	internal class Win32SoundPlayer : IDisposable
+	internal partial class Win32SoundPlayer : IDisposable
 	{
 		public Win32SoundPlayer (Stream s)
 		{
@@ -45,12 +45,6 @@ namespace Mono.Audio
 				_buffer = new byte [0];
 			}
 		}
-
-		[DllImport ("winmm.dll", SetLastError = true)]
-		static extern bool PlaySound (
-			byte [] ptrToSound,
-			UIntPtr hmod,
-			SoundFlags flags);
 
 		public Stream Stream {
 			set {

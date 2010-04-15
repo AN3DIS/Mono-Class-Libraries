@@ -38,10 +38,8 @@ using System.Runtime.CompilerServices;
 
 namespace System.Diagnostics
 {
-	public class Stopwatch
+	public partial class Stopwatch
 	{
-		[MethodImplAttribute(MethodImplOptions.InternalCall)]
-		public static extern long GetTimestamp ();
 
 		public static readonly long Frequency = 10000000;
 
@@ -117,6 +115,15 @@ namespace System.Diagnostics
 			elapsed += GetTimestamp () - started;
 			is_running = false;
 		}
+
+#if NET_4_0
+		public void Restart ()
+		{
+			started = GetTimestamp ();
+			elapsed = 0;
+			is_running = true;
+		}
+#endif
 	}
 }
 

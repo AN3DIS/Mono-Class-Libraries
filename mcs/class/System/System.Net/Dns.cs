@@ -36,9 +36,9 @@ using System.Runtime.Remoting.Messaging;
 
 namespace System.Net {
 #if NET_2_0
-	public static class Dns {
+	public static partial class Dns {
 #else
-	public sealed class Dns {
+	public sealed partial class Dns {
 
 		private Dns () {}
 #endif
@@ -48,7 +48,7 @@ namespace System.Net {
 			System.Net.Sockets.Socket.CheckProtocolSupport();
 		}
 
-#if !NET_2_1 || MONOTOUCH // global remove of async methods
+#if !MOONLIGHT // global remove of async methods
 
 		private delegate IPHostEntry GetHostByNameCallback (string hostName);
 		private delegate IPHostEntry ResolveCallback (string hostName);
@@ -177,17 +177,10 @@ namespace System.Net {
 		}
 #endif
 		
-#endif // !NET_2_1: global remove of async methods
+#endif // !MOONLIGHT: global remove of async methods
 
 #if !TARGET_JVM
-		[MethodImplAttribute(MethodImplOptions.InternalCall)]
-		private extern static bool GetHostByName_internal(string host, out string h_name, out string[] h_aliases, out string[] h_addr_list);
 
-		[MethodImplAttribute(MethodImplOptions.InternalCall)]
-		private extern static bool GetHostByAddr_internal(string addr, out string h_name, out string[] h_aliases, out string[] h_addr_list);
-
-		[MethodImplAttribute(MethodImplOptions.InternalCall)]
-		private extern static bool GetHostName_internal(out string h_name);
 #endif	
 
 		private static IPHostEntry hostent_to_IPHostEntry(string h_name, string[] h_aliases, string[] h_addrlist) 

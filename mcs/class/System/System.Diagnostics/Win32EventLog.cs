@@ -41,7 +41,7 @@ using Microsoft.Win32;
 
 namespace System.Diagnostics
 {
-	internal class Win32EventLog : EventLogImpl
+	internal partial class Win32EventLog : EventLogImpl
 	{
 		private const int MESSAGE_NOT_FOUND = 317;
 		private ManualResetEvent _notifyResetEvent;
@@ -460,7 +460,6 @@ namespace System.Diagnostics
 			}
 		}
 
-
 		[MonoTODO ("Support remote machines")]
 		private static RegistryKey GetEventLogKey (string machineName, bool writable)
 		{
@@ -785,61 +784,8 @@ namespace System.Diagnostics
 		}
 #endif
 
-		private class PInvoke
+		private partial class PInvoke
 		{
-			[DllImport ("advapi32.dll", SetLastError=true)]
-			public static extern int ClearEventLog (IntPtr hEventLog, string lpBackupFileName);
-
-			[DllImport ("advapi32.dll", SetLastError=true)]
-			public static extern int CloseEventLog (IntPtr hEventLog);
-
-			[DllImport ("advapi32.dll", SetLastError=true)]
-			public static extern int DeregisterEventSource (IntPtr hEventLog);
-
-			[DllImport ("kernel32.dll", CharSet=CharSet.Auto, SetLastError=true)]
-			public static extern int FormatMessage (FormatMessageFlags dwFlags, IntPtr lpSource, uint dwMessageId, int dwLanguageId, ref IntPtr lpBuffer, int nSize, IntPtr [] arguments);
-
-			[DllImport ("kernel32.dll", SetLastError=true)]
-			public static extern bool FreeLibrary (IntPtr hModule);
-
-			[DllImport ("advapi32.dll", SetLastError=true)]
-			public static extern int GetNumberOfEventLogRecords (IntPtr hEventLog, ref int NumberOfRecords);
-
-			[DllImport ("advapi32.dll", SetLastError=true)]
-			public static extern int GetOldestEventLogRecord (IntPtr hEventLog, ref int OldestRecord);
-
-			[DllImport ("kernel32.dll", SetLastError=true)]
-			public static extern IntPtr LoadLibraryEx (string lpFileName, IntPtr hFile, LoadFlags dwFlags);
-
-			[DllImport ("kernel32.dll", SetLastError=true)]
-			public static extern IntPtr LocalFree (IntPtr hMem);
-
-			[DllImport ("advapi32.dll", SetLastError=true)]
-			public static extern bool LookupAccountSid (
-				string lpSystemName,
-				[MarshalAs (UnmanagedType.LPArray)] byte [] Sid,
-				StringBuilder lpName,
-				ref uint cchName,
-				StringBuilder ReferencedDomainName,
-				ref uint cchReferencedDomainName,
-				out SidNameUse peUse);
-
-			[DllImport ("Advapi32.dll", SetLastError = true)]
-			public static extern int NotifyChangeEventLog (IntPtr hEventLog, IntPtr hEvent);
-
-			[DllImport ("advapi32.dll", SetLastError=true)]
-			public static extern IntPtr OpenEventLog (string machineName, string logName);
-
-			[DllImport ("advapi32.dll", SetLastError=true)]
-			public static extern IntPtr RegisterEventSource (string machineName, string sourceName);
-
-			[DllImport ("Advapi32.dll", SetLastError=true)]
-			public static extern int ReportEvent (IntPtr hHandle, ushort wType,
-				ushort wCategory, uint dwEventID, IntPtr sid, ushort wNumStrings,
-				uint dwDataSize, string [] lpStrings, byte [] lpRawData);
-
-			[DllImport ("advapi32.dll", SetLastError=true)]
-			public static extern int ReadEventLog (IntPtr hEventLog, ReadFlags dwReadFlags, int dwRecordOffset, byte [] buffer, int nNumberOfBytesToRead, ref int pnBytesRead, ref int pnMinNumberOfBytesNeeded);
 
 			public const int ERROR_INSUFFICIENT_BUFFER = 122;
 			public const int ERROR_EVENTLOG_FILE_CHANGED = 1503;

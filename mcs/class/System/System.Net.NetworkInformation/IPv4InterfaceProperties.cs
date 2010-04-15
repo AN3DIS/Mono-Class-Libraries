@@ -138,10 +138,8 @@ namespace System.Net.NetworkInformation {
 		}
 	}
 	
-	sealed class Win32IPv4InterfaceProperties : IPv4InterfaceProperties
+	sealed partial class Win32IPv4InterfaceProperties : IPv4InterfaceProperties
 	{
-		[DllImport ("iphlpapi.dll")]
-		static extern int GetPerAdapterInfo (int IfIndex, Win32_IP_PER_ADAPTER_INFO pPerAdapterInfo, ref int pOutBufLen);
 
 		Win32_IP_ADAPTER_INFO ainfo;
 		Win32_IP_PER_ADAPTER_INFO painfo;

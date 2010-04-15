@@ -39,42 +39,14 @@ using System.Runtime.CompilerServices;
 
 namespace System.IO
 {
-	internal sealed class MonoIO {
+	internal sealed partial class MonoIO {
 
 		// handle methods
 
-		[MethodImplAttribute (MethodImplOptions.InternalCall)]
-		public extern static bool Close (IntPtr handle,
-						 out MonoIOError error);
-		
 		// console handles
-
-		public extern static IntPtr ConsoleOutput {
-			[MethodImplAttribute (MethodImplOptions.InternalCall)]
-			get;
-		}
-
-		public extern static IntPtr ConsoleInput {
-			[MethodImplAttribute (MethodImplOptions.InternalCall)]
-			get;
-		}
-
-		public extern static IntPtr ConsoleError {
-			[MethodImplAttribute (MethodImplOptions.InternalCall)]
-			get;
-		}
 
 		// pipe handles
 
-		[MethodImplAttribute (MethodImplOptions.InternalCall)]
-		public extern static bool CreatePipe (out IntPtr read_handle, out IntPtr write_handle);
-
-		[MethodImplAttribute (MethodImplOptions.InternalCall)]
-		public extern static bool DuplicateHandle (IntPtr source_process_handle, IntPtr source_handle,
-			IntPtr target_process_handle, out IntPtr target_handle, int access, int inherit, int options);
-
-		[MethodImplAttribute (MethodImplOptions.InternalCall)]
-		public extern static int GetTempPath(out string path);
 	}
 }
 

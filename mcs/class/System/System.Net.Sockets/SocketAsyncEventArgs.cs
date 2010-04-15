@@ -32,27 +32,15 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Security;
 using System.Threading;
+#if MOONLIGHT && !INSIDE_SYSTEM
+using System.Net.Policy;
+#endif
 
 namespace System.Net.Sockets
 {
 	public class SocketAsyncEventArgs : EventArgs, IDisposable
 	{
-#if NET_2_1 && !MONOTOUCH
-		static MethodInfo check_socket_policy;
-
-		static SocketAsyncEventArgs ()
-		{
-			Type type = Type.GetType ("System.Windows.Browser.Net.CrossDomainPolicyManager, System.Windows.Browser, Version=2.0.5.0, Culture=Neutral, PublicKeyToken=7cec85d7bea7798e");
-			check_socket_policy = type.GetMethod ("CheckEndPoint");
-		}
-
-		static internal bool CheckEndPoint (EndPoint endpoint)
-		{
-			if (check_socket_policy == null)
-				throw new SecurityException ();
-			return ((bool) check_socket_policy.Invoke (null, new object [1] { endpoint }));
-		}
-
+#if MOONLIGHT || NET_4_0
 		public Exception ConnectByNameError { get; internal set; }
 #endif
 
@@ -218,7 +206,7 @@ namespace System.Net.Sockets
 			LastOperation = SocketAsyncOperation.Connect;
 			SocketError error = SocketError.AccessDenied;
 			try {
-#if NET_2_1 && !MONOTOUCH
+#if MOONLIGHT || NET_4_0
 				// Connect to the first address that match the host name, like:
 				// http://blogs.msdn.com/ncl/archive/2009/07/20/new-ncl-features-in-net-4-0-beta-2.aspx
 				// while skipping entries that do not match the address family
@@ -257,11 +245,11 @@ namespace System.Net.Sockets
 		{
 			curSocket.Connected = false;
 			SocketError error = SocketError.Success;
-#if NET_2_1 && !MONOTOUCH
+#if MOONLIGHT && !INSIDE_SYSTEM
 			// if we're not downloading a socket policy then check the policy
 			if (!PolicyRestricted) {
 				error = SocketError.AccessDenied;
-				if (!CheckEndPoint (endpoint)) {
+				if (!CrossDomainPolicyManager.CheckEndPoint (endpoint)) {
 					return error;
 				}
 				error = SocketError.Success;

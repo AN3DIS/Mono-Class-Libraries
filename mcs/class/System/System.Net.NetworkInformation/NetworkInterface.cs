@@ -41,9 +41,7 @@ using System.IO;
 using System.Globalization;
 
 namespace System.Net.NetworkInformation {
-	public abstract class NetworkInterface {
-		[DllImport ("libc")]
-		static extern int uname (IntPtr buf);
+	public abstract partial class NetworkInterface {
 
 		static Version windowsVer51 = new Version (5, 1);
 		static internal readonly bool runningOnUnix = (Environment.OSVersion.Platform == PlatformID.Unix);
@@ -126,16 +124,14 @@ namespace System.Net.NetworkInformation {
 		public abstract bool SupportsMulticast { get; }
 	}
 
-	abstract class UnixNetworkInterface : NetworkInterface
+	abstract partial class UnixNetworkInterface : NetworkInterface
 	{
-		[DllImport("libc")]
-		static extern int if_nametoindex(string ifname);
 
 		protected IPv4InterfaceStatistics ipv4stats;
 		protected IPInterfaceProperties ipproperties;
 		
 		string               name;
-		int                  index;
+		//int                  index;
 		protected List <IPAddress> addresses;
 		byte[]               macAddress;
 		NetworkInterfaceType type;
@@ -158,7 +154,7 @@ namespace System.Net.NetworkInformation {
 
 		internal void SetLinkLayerInfo (int index, byte[] macAddress, NetworkInterfaceType type)
 		{
-			this.index = index;
+			//this.index = index;
 			this.macAddress = macAddress;
 			this.type = type;
 		}
@@ -221,19 +217,14 @@ namespace System.Net.NetworkInformation {
 	//
 	// For this to work, we have to create this on the factory above.
 	//
-	class LinuxNetworkInterface : UnixNetworkInterface
+	partial class LinuxNetworkInterface : UnixNetworkInterface
 	{
-		[DllImport ("libc")]
-		static extern int getifaddrs (out IntPtr ifap);
-
-		[DllImport ("libc")]
-		static extern void freeifaddrs (IntPtr ifap);
 
 		const int AF_INET   = 2;
 		const int AF_INET6  = 10;
 		const int AF_PACKET = 17;
 		
-		NetworkInterfaceType type;
+		//NetworkInterfaceType type;
 		string               iface_path;
 		string               iface_operstate_path;
 		string               iface_flags_path;		
@@ -438,13 +429,8 @@ namespace System.Net.NetworkInformation {
 		}
 	}
 
-	class MacOsNetworkInterface : UnixNetworkInterface
+	partial class MacOsNetworkInterface : UnixNetworkInterface
 	{
-		[DllImport ("libc")]
-		static extern int getifaddrs (out IntPtr ifap);
-
-		[DllImport ("libc")]
-		static extern void freeifaddrs (IntPtr ifap);
 
 		const int AF_INET  = 2;
 		const int AF_INET6 = 30;
@@ -575,16 +561,8 @@ namespace System.Net.NetworkInformation {
 		}
 	}
 
-	class Win32NetworkInterface2 : NetworkInterface
+	partial class Win32NetworkInterface2 : NetworkInterface
 	{
-		[DllImport ("iphlpapi.dll", SetLastError = true)]
-		static extern int GetAdaptersInfo (byte [] info, ref int size);
-
-		[DllImport ("iphlpapi.dll", SetLastError = true)]
-		static extern int GetAdaptersAddresses (uint family, uint flags, IntPtr reserved, byte [] info, ref int size);
-
-		[DllImport ("iphlpapi.dll", SetLastError = true)]
-		static extern int GetIfEntry (ref Win32_MIB_IFROW row);
 
 		public static NetworkInterface [] ImplGetAllNetworkInterfaces ()
 		{

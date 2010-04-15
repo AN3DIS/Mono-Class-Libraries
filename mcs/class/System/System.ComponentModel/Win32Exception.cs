@@ -38,7 +38,7 @@ using System.Runtime.CompilerServices;
 namespace System.ComponentModel
 {
 	[Serializable, SuppressUnmanagedCodeSecurity]
-	public class Win32Exception : ExternalException
+	public partial class Win32Exception : ExternalException
 	{
 		private int native_error_code;
 
@@ -109,7 +109,5 @@ namespace System.ComponentModel
 			base.GetObjectData (info, context);
 		}
 
-		[MethodImplAttribute (MethodImplOptions.InternalCall)]
-		internal static extern string W32ErrorMessage (int error_code);
 	}
 }

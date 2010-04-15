@@ -31,6 +31,8 @@ namespace Mono.Security.Cryptography
 #endif
 	partial class KeyPairPersistence
 	{
+#if INSIDE_CORLIB
+
 		internal static bool _CanSecure (string root)
 		{
 			throw new System.NotImplementedException();
@@ -51,7 +53,7 @@ namespace Mono.Security.Cryptography
 		{
 			throw new System.NotImplementedException();
 		}
-
+#endif
 	}
 }
 #endif

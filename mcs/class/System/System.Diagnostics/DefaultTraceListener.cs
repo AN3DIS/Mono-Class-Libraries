@@ -47,7 +47,7 @@ namespace System.Diagnostics {
 #else
 	[ComVisible(false)]
 #endif
-	public class DefaultTraceListener : TraceListener {
+	public partial class DefaultTraceListener : TraceListener {
 
 		private static readonly bool OnWin32;
 
@@ -217,8 +217,6 @@ namespace System.Diagnostics {
 		private void WriteDebugString (string message)
 		{
 #else
-		[MethodImplAttribute(MethodImplOptions.InternalCall)]
-		private extern static void WriteWindowsDebugString (string message);
 
 		private void WriteDebugString (string message)
 		{

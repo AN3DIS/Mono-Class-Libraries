@@ -8,7 +8,6 @@
 // (c) Copyright 2006 Novell, Inc. (http://www.novell.com)
 //
 
-
 #if NET_2_0
 
 using System;
@@ -17,15 +16,12 @@ using System.Runtime.InteropServices;
 
 namespace System.IO.Ports
 {
-	class SerialPortStream : Stream, ISerialStream, IDisposable
+	partial class SerialPortStream : Stream, ISerialStream, IDisposable
 	{
 		int fd;
 		int read_timeout;
 		int write_timeout;
 		bool disposed;
-
-		[DllImport ("MonoPosixHelper", SetLastError = true)]
-		static extern int open_serial (string portName);
 
 		public SerialPortStream (string portName, int baudRate, int dataBits, Parity parity, StopBits stopBits,
 				bool dtrEnable, bool rtsEnable, Handshake handshake, int readTimeout, int writeTimeout,
@@ -117,13 +113,6 @@ namespace System.IO.Ports
 			// buffer (not the SerialPort class buffer)
 		}
 
-		[DllImport ("MonoPosixHelper", SetLastError = true)]
-		static extern int read_serial (int fd, byte [] buffer, int offset, int count);
-		
-
-		[DllImport ("MonoPosixHelper", SetLastError = true)]
-		static extern bool poll_serial (int fd, out int error, int timeout);
-
 		public override int Read ([In,Out] byte[] buffer, int offset, int count)
 		{
 			CheckDisposed ();
@@ -147,7 +136,10 @@ namespace System.IO.Ports
 				throw new TimeoutException();
 			}
 
-			return read_serial (fd, buffer, offset, count);
+			int result = read_serial (fd, buffer, offset, count);
+			if (result == -1)
+				ThrowIOException ();
+			return result;
 		}
 
 		public override long Seek (long offset, SeekOrigin origin)
@@ -159,9 +151,6 @@ namespace System.IO.Ports
 		{
 			throw new NotSupportedException ();
 		}
-
-		[DllImport ("MonoPosixHelper", SetLastError = true)]
-		static extern int write_serial (int fd, byte [] buffer, int offset, int count, int timeout);
 
 		public override void Write (byte[] buffer, int offset, int count)
 		{
@@ -176,6 +165,7 @@ namespace System.IO.Ports
 				throw new ArgumentException ("offset+count",
 							     "The size of the buffer is less than offset + count.");
 
+			// FIXME: this reports every write error as timeout
 			if (write_serial (fd, buffer, offset, count, write_timeout) < 0)
 				throw new TimeoutException("The operation has timed-out");
 		}
@@ -189,9 +179,6 @@ namespace System.IO.Ports
 			if (close_serial (fd) != 0)
 				ThrowIOException();
 		}
-
-		[DllImport ("MonoPosixHelper", SetLastError = true)]
-		static extern int close_serial (int fd);
 
 		public override void Close ()
 		{
@@ -215,46 +202,42 @@ namespace System.IO.Ports
 				throw new ObjectDisposedException (GetType ().FullName);
 		}
 
-		[DllImport ("MonoPosixHelper", SetLastError = true)]
-		static extern bool set_attributes (int fd, int baudRate, Parity parity, int dataBits, StopBits stopBits, Handshake handshake);
-
 		public void SetAttributes (int baud_rate, Parity parity, int data_bits, StopBits sb, Handshake hs)
 		{
 			if (!set_attributes (fd, baud_rate, parity, data_bits, sb, hs))
 				ThrowIOException ();
 		}
 
-		[DllImport("MonoPosixHelper", SetLastError = true)]
-		static extern int get_bytes_in_buffer (int fd, int input);
-		
 		public int BytesToRead {
 			get {
-				return get_bytes_in_buffer (fd, 1);
+				int result = get_bytes_in_buffer (fd, 1);
+				if (result == -1)
+					ThrowIOException ();
+				return result;
 			}
 		}
 
 		public int BytesToWrite {
 			get {
-				return get_bytes_in_buffer (fd, 0);
+				int result = get_bytes_in_buffer (fd, 0);
+				if (result == -1)
+					ThrowIOException ();
+				return result;
 			}
 		}
 
-		[DllImport ("MonoPosixHelper", SetLastError = true)]
-		static extern void discard_buffer (int fd, bool inputBuffer);
-
 		public void DiscardInBuffer ()
 		{
-			discard_buffer (fd, true);
+			if (discard_buffer (fd, true) != 0)
+				ThrowIOException();
 		}
 
 		public void DiscardOutBuffer ()
 		{
-			discard_buffer (fd, false);
+			if (discard_buffer (fd, false) != 0)
+				ThrowIOException();
 		}
 		
-		[DllImport ("MonoPosixHelper", SetLastError = true)]
-		static extern SerialSignal get_signals (int fd, out int error);
-
 		public SerialSignal GetSignals ()
 		{
 			int error;
@@ -264,9 +247,6 @@ namespace System.IO.Ports
 
 			return signals;
 		}
-
-		[DllImport ("MonoPosixHelper", SetLastError = true)]
-		static extern int set_signal (int fd, SerialSignal signal, bool value);
 
 		public void SetSignal (SerialSignal signal, bool value)
 		{
@@ -280,17 +260,12 @@ namespace System.IO.Ports
 				ThrowIOException ();
 		}
 
-		[DllImport ("MonoPosixHelper", SetLastError = true)]
-		static extern int breakprop (int fd);
-
 		public void SetBreakState (bool value)
 		{
 			if (value)
-				breakprop (fd);
+				if (breakprop (fd) == -1)
+					ThrowIOException ();
 		}
-
-		[DllImport ("libc")]
-		static extern IntPtr strerror (int errnum);
 
 		static void ThrowIOException ()
 		{
@@ -303,5 +278,4 @@ namespace System.IO.Ports
 }
 
 #endif
-
 

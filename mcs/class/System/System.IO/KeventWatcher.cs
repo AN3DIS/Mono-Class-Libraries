@@ -79,7 +79,7 @@ namespace System.IO {
 		public kevent ev;
         }
 
-	class KeventWatcher : IFileWatcher
+	partial class KeventWatcher : IFileWatcher
 	{
 		static bool failed;
 		static KeventWatcher instance;
@@ -306,7 +306,6 @@ namespace System.IO {
 					// The file system infos were changed while we processed them
 				}
 				
-
 			}
 		}
 
@@ -342,17 +341,6 @@ namespace System.IO {
 			}
 		}
 
-		[DllImport ("libc")]
-		extern static int open(string path, int flags, int mode_t);
-		
-		[DllImport ("libc")]
-		extern static int close(int fd);
-
-		[DllImport ("libc")]
-		extern static int kqueue();
-
-		[DllImport ("libc")]
-		extern static int kevent(int kqueue, ref kevent ev, int nchanges, ref kevent evtlist,  int nevents, ref timespec ts);
 	}
 }
 

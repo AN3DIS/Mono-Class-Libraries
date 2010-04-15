@@ -38,10 +38,8 @@ namespace System.Net.NetworkInformation
 	// grep around /usr/include/w32api/* for identifiers you are curious.
 
 	[StructLayout (LayoutKind.Sequential)]
-	class Win32_FIXED_INFO
+	partial class Win32_FIXED_INFO
 	{
-		[DllImport ("iphlpapi.dll", SetLastError = true)]
-		static extern int GetNetworkParams (byte [] bytes, ref int size);
 
 		static Win32_FIXED_INFO fixed_info;
 
