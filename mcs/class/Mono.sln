@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "corlib", "corlib\corlib.csproj", "{046E36FF-1E58-44A4-AE1F-F122E1BC7D42}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "corlib", "corlib\corlib.csproj", "{280AB6D2-996F-496A-B41A-8FC2820A9024}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -9,10 +9,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{046E36FF-1E58-44A4-AE1F-F122E1BC7D42}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{046E36FF-1E58-44A4-AE1F-F122E1BC7D42}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{046E36FF-1E58-44A4-AE1F-F122E1BC7D42}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{046E36FF-1E58-44A4-AE1F-F122E1BC7D42}.Release|Any CPU.Build.0 = Release|Any CPU
+		{280AB6D2-996F-496A-B41A-8FC2820A9024}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{280AB6D2-996F-496A-B41A-8FC2820A9024}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{280AB6D2-996F-496A-B41A-8FC2820A9024}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{280AB6D2-996F-496A-B41A-8FC2820A9024}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
