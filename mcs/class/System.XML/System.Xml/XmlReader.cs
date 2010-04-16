@@ -35,7 +35,7 @@ using System.Collections;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
-#if !NET_2_1 || MONOTOUCH
+#if !MOONLIGHT
 using System.Xml.Schema; // only required for NET_2_0 (SchemaInfo)
 using System.Xml.Serialization; // only required for NET_2_0 (SchemaInfo)
 using Mono.Xml.Schema; // only required for NET_2_0
@@ -186,7 +186,7 @@ namespace System.Xml
 		public abstract ReadState ReadState { get; }
 
 #if NET_2_0
-#if !NET_2_1 || MONOTOUCH
+#if !MOONLIGHT
 		public virtual IXmlSchemaInfo SchemaInfo {
 			get { return null; }
 		}
@@ -414,7 +414,7 @@ namespace System.Xml
 
 		private static XmlReader CreateValidatingXmlReader (XmlReader reader, XmlReaderSettings settings)
 		{
-#if NET_2_1 && !MONOTOUCH
+#if MOONLIGHT
 			return reader;
 #else
 			XmlValidatingReader xvr = null;
@@ -989,9 +989,9 @@ namespace System.Xml
 					return text;
 				if (type == typeof (XmlQualifiedName)) {
 					if (resolver != null)
-						return XmlQualifiedName.Parse (text, resolver);
+						return XmlQualifiedName.Parse (text, resolver, true);
 					else
-						return XmlQualifiedName.Parse (text, this);
+						return XmlQualifiedName.Parse (text, this, true);
 				}
 				if (type == typeof (DateTimeOffset))
 					return XmlConvert.ToDateTimeOffset (text);

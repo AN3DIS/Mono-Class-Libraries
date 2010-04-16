@@ -5,7 +5,7 @@
 		<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
 		<ProductVersion>9.0.30729</ProductVersion>
 		<SchemaVersion>2.0</SchemaVersion>
-		<ProjectGuid>{48f6c302-f18d-40bb-bab9-4d8b71303850}</ProjectGuid>
+		<ProjectGuid>{27bf450b-5c9d-4111-8a1c-ebce685d1b7a}</ProjectGuid>
 		<OutputType>library</OutputType>
 		<AppDesignerFolder>Properties</AppDesignerFolder>
 		<RootNamespace>System.XML</RootNamespace>
@@ -19,7 +19,7 @@
 		<DebugType>full</DebugType>
 		<Optimize>false</Optimize>
 		<OutputPath>bin\Debug\</OutputPath>
-		<DefineConstants>TRACE;DEBUG;NET_1_1;NET_2_0;INSIDE_CORLIB;</DefineConstants>
+		<DefineConstants>TRACE;DEBUG;NET_1_1;NET_2_0;</DefineConstants>
 		<ErrorReport>prompt</ErrorReport>
 		<WarningLevel>4</WarningLevel>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -29,7 +29,7 @@
 		<DebugType>pdbonly</DebugType>
 		<Optimize>true</Optimize>
 		<OutputPath>bin\Release\</OutputPath>
-		<DefineConstants>NET_1_1;NET_2_0;INSIDE_CORLIB;</DefineConstants>
+		<DefineConstants>NET_1_1;NET_2_0;</DefineConstants>
 		<ErrorReport>prompt</ErrorReport>
 		<WarningLevel>4</WarningLevel>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -421,10 +421,16 @@
 		<Compile Include="System.Xml.Serialization.Configuration\SerializationSectionGroup.cs" />
 		<Compile Include="System.Xml.Serialization.Configuration\XmlSerializerSection.cs" />
 		<Compile Include="System.Xml\XQueryConvert.cs" />
+		<Compile Include="System.Xml.XPath\Parser.cs" />
+		<Compile Include="System.Xml.XPath\PatternParser.cs" />
+		<Compile Include="System.Xml.XPath\PatternTokenizer.cs" />
 	</ItemGroup>
 	<ItemGroup>
-		<ProjectReference Include="corlib.csproj">
+		<ProjectReference Include="..\corlib\corlib.csproj">
 			<Name>corlib</Name>
+		</ProjectReference>
+		<ProjectReference Include="..\System\System.csproj">
+			<Name>System</Name>
 		</ProjectReference>
 	</ItemGroup>
 	<Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
