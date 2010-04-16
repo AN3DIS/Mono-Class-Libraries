@@ -26,12 +26,9 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-#if NET_4_0
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Serialization;
 using System.Runtime.InteropServices;
 using System.Security;
@@ -40,6 +37,7 @@ using System.Diagnostics;
 
 // SortedSet is basically implemented as a reduction of SortedDictionary<K, V>
 
+#if NET_4_0
 
 namespace System.Collections.Generic {
 
