@@ -32,6 +32,7 @@
 #if !MOONLIGHT
 
 using System.Collections;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Reflection;

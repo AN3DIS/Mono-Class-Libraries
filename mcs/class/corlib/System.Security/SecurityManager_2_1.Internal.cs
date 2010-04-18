@@ -45,6 +45,11 @@ namespace System.Security
 		[MethodImplAttribute (MethodImplOptions.InternalCall)]
 		get;
 		}
+		
+		extern static bool RequiresElevatedPermissions {
+		[MethodImplAttribute (MethodImplOptions.InternalCall)]
+		get;
+		}
 
 	}
 }

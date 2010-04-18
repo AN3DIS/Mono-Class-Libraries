@@ -32,6 +32,7 @@
 #if !MOONLIGHT
 
 using System.Collections;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
@@ -68,6 +69,17 @@ namespace System.Security {
 		}
 
 		// properties
+
+		internal static bool CheckElevatedPermissions ()
+		{
+			return true; // always true outside Moonlight
+		}
+
+		[Conditional ("MOONLIGHT")]
+		internal static void EnsureElevatedPermissions ()
+		{
+			// do nothing outside of Moonlight
+		}
 
 		// methods
 

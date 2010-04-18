@@ -47,11 +47,37 @@ namespace System.Security {
 
 	internal static partial class SecurityManager {
 
+		static SecurityManager ()
+		{
+			// if the security manager (coreclr) is not active then the application has elevated permissions
+			HasElevatedPermissions = !SecurityEnabled;
+		}
+
 		// note: this let us differentiate between running in the browser (w/CoreCLR) and 
 		// running on the desktop (e.g. smcs compiling stuff)
 
-		public static bool HasElevatedPermissions {
+		internal static bool HasElevatedPermissions {
 			get; set;
+		}
+
+		[MethodImpl (MethodImplOptions.NoInlining)]
+		internal static bool CheckElevatedPermissions ()
+		{
+			if (HasElevatedPermissions)
+				return true;
+
+			return !RequiresElevatedPermissions;
+		}
+
+		[MethodImpl (MethodImplOptions.NoInlining)]
+		internal static void EnsureElevatedPermissions ()
+		{
+			// shortcut (to avoid the stack walk) if we are running with elevated trust
+			if (HasElevatedPermissions)
+				return;
+
+			if (RequiresElevatedPermissions)
+				throw new SecurityException ("This operation requires elevated permissions");
 		}
 
 		internal static IPermission CheckPermissionSet (Assembly a, PermissionSet ps, bool noncas)

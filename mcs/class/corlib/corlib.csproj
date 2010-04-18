@@ -5,7 +5,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{40ca7257-d3a9-4aa1-bbea-56ef3ad007aa}</ProjectGuid>
+    <ProjectGuid>{173e702c-9bef-42d6-9483-759f8c3ab3c8}</ProjectGuid>
     <OutputType>library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>corlib</RootNamespace>
