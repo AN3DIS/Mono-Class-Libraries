@@ -96,7 +96,7 @@ namespace Mono.Security.Cryptography {
 #else
 	public 
 #endif
-	partial class KeyPairPersistence {
+	class KeyPairPersistence {
 	
 		private static bool _userPathExists = false; // check at 1st use
 		private static string _userPath;
@@ -268,7 +268,20 @@ namespace Mono.Security.Cryptography {
 		}
 
 #if INSIDE_CORLIB
+		[MethodImplAttribute (MethodImplOptions.InternalCall)]
+		internal static extern bool _CanSecure (string root);
 
+		[MethodImplAttribute (MethodImplOptions.InternalCall)]
+		internal static extern bool _ProtectUser (string path);
+
+		[MethodImplAttribute (MethodImplOptions.InternalCall)]
+		internal static extern bool _ProtectMachine (string path);
+
+		[MethodImplAttribute (MethodImplOptions.InternalCall)]
+		internal static extern bool _IsUserProtected (string path);
+
+		[MethodImplAttribute (MethodImplOptions.InternalCall)]
+		internal static extern bool _IsMachineProtected (string path);
 #else
 		// Mono.Security.dll assembly can't use the internal 
 		// call (and still run with other runtimes)
