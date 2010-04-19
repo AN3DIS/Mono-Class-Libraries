@@ -297,7 +297,7 @@ namespace System.IO.Pipes
 		}
 	}
 
-	static partial class Win32Marshal
+	static class Win32Marshal
 	{
 		internal static bool IsWindows {
 			get {
@@ -314,18 +314,32 @@ namespace System.IO.Pipes
 		}
 
 		// http://msdn.microsoft.com/en-us/library/aa365152%28VS.85%29.aspx
+		[DllImport ("kernel32")]
+		internal static extern bool CreatePipe (out IntPtr readHandle, out IntPtr writeHandle, ref SecurityAttributesHack pipeAtts, int size);
 
 		// http://msdn.microsoft.com/en-us/library/aa365150%28VS.85%29.aspx
+		[DllImport ("kernel32")]
+		internal static extern IntPtr CreateNamedPipe (string name, uint openMode, int pipeMode, int maxInstances, int outBufferSize, int inBufferSize, int defaultTimeout, ref SecurityAttributesHack securityAttributes, IntPtr atts);
 
 		// http://msdn.microsoft.com/en-us/library/aa365146%28VS.85%29.aspx
+		[DllImport ("kernel32")]
+		internal static extern bool ConnectNamedPipe (SafePipeHandle handle, IntPtr overlapped);
 
 		// http://msdn.microsoft.com/en-us/library/aa365166%28VS.85%29.aspx
+		[DllImport ("kernel32")]
+		internal static extern bool DisconnectNamedPipe (SafePipeHandle handle);
 
 		// http://msdn.microsoft.com/en-us/library/aa365443%28VS.85%29.aspx
+		[DllImport ("kernel32")]
+		internal static extern bool GetNamedPipeHandleState (SafePipeHandle handle, out int state, out int curInstances, out int maxCollectionCount, out int collectDateTimeout, byte [] userName, int maxUserNameSize);
 
 		// http://msdn.microsoft.com/en-us/library/aa365800%28VS.85%29.aspx
+		[DllImport ("kernel32")]
+		internal static extern bool WaitNamedPipe (string name, int timeout);
 
 		// http://msdn.microsoft.com/en-us/library/aa363858%28VS.85%29.aspx
+		[DllImport ("kernel32")]
+		internal static extern IntPtr CreateFile (string name, PipeAccessRights desiredAccess, FileShare fileShare, ref SecurityAttributesHack atts, int creationDisposition, int flags, IntPtr templateHandle);
 
 	}
 }
