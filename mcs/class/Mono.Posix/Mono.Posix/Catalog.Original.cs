@@ -36,7 +36,14 @@ using System.Runtime.InteropServices;
 namespace Mono.Posix {
 
 	[Obsolete ("Use Mono.Unix.Catalog")]
-	public partial class Catalog {
+	public class Catalog {
+		[DllImport("intl")]
+		static extern IntPtr bindtextdomain (IntPtr domainname, IntPtr dirname);
+		[DllImport("intl")]
+		static extern IntPtr bind_textdomain_codeset (IntPtr domainname,
+			IntPtr codeset);
+		[DllImport("intl")]
+		static extern IntPtr textdomain (IntPtr domainname);
 		
 		public static void Init (String package, String localedir)
 		{
@@ -51,6 +58,9 @@ namespace Mono.Posix {
 			Marshal.FreeHGlobal (iutf8);
 		}
 	
+		[DllImport("intl")]
+		static extern IntPtr gettext (IntPtr instring);
+		
 		public static String GetString (String s)
 		{
 			IntPtr ints = Marshal.StringToHGlobalAuto (s);
@@ -59,6 +69,9 @@ namespace Mono.Posix {
 			return t;
 		}
 	
+		[DllImport("intl")]
+		static extern IntPtr ngettext (IntPtr singular, IntPtr plural, Int32 n);
+		
 		public static String GetPluralString (String s, String p, Int32 n)
 		{
 			IntPtr ints = Marshal.StringToHGlobalAuto (s);

@@ -35,7 +35,7 @@ using Mono.Unix.Native;
 
 namespace Mono.Unix {
 
-	public partial class UnixSignal : WaitHandle {
+	public class UnixSignal : WaitHandle {
 		private int signum;
 		private IntPtr signal_info;
 
@@ -86,8 +86,28 @@ namespace Mono.Unix {
 			}
 		}
 
+		[DllImport (Stdlib.MPH, CallingConvention=CallingConvention.Cdecl,
+				EntryPoint="Mono_Unix_UnixSignal_install", SetLastError=true)]
+		private static extern IntPtr install (int signum);
+
+		[DllImport (Stdlib.MPH, CallingConvention=CallingConvention.Cdecl,
+				EntryPoint="Mono_Unix_UnixSignal_uninstall")]
+		private static extern int uninstall (IntPtr info);
+
 		[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
 		delegate int Mono_Posix_RuntimeIsShuttingDown ();
+
+		[DllImport (Stdlib.MPH, CallingConvention=CallingConvention.Cdecl,
+				EntryPoint="Mono_Unix_UnixSignal_WaitAny")]
+		private static extern int WaitAny (IntPtr[] infos, int count, int timeout, Mono_Posix_RuntimeIsShuttingDown shutting_down);
+
+		[DllImport (Stdlib.MPH, CallingConvention=CallingConvention.Cdecl,
+                                EntryPoint="Mono_Posix_SIGRTMIN")]
+		internal static extern int GetSIGRTMIN ();
+
+		[DllImport (Stdlib.MPH, CallingConvention=CallingConvention.Cdecl,
+                                EntryPoint="Mono_Posix_SIGRTMAX")]
+		internal static extern int GetSIGRTMAX ();
 
 		private void AssertValid ()
 		{

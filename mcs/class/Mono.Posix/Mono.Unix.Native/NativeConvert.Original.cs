@@ -18,6 +18,9 @@ namespace Mono.Unix.Native {
 		// Non-generated exports
 		//
 
+		[DllImport (LIB, EntryPoint="Mono_Posix_FromRealTimeSignum")]
+		private static extern int FromRealTimeSignum (Int32 offset, out Int32 rval);
+
 		// convert a realtime signal to os signal
 		public static int FromRealTimeSignum (RealTimeSignum sig)
 		{
@@ -315,10 +318,16 @@ namespace Mono.Unix.Native {
 			return fopen_mode;
 		}
 
+		[DllImport (LIB, EntryPoint="Mono_Posix_FromStatvfs")]
+		private static extern int FromStatvfs (ref Statvfs source, IntPtr destination);
+
 		public static bool TryCopy (ref Statvfs source, IntPtr destination)
 		{
 			return FromStatvfs (ref source, destination) == 0;
 		}
+
+		[DllImport (LIB, EntryPoint="Mono_Posix_ToStatvfs")]
+		private static extern int ToStatvfs (IntPtr source, out Statvfs destination);
 
 		public static bool TryCopy (IntPtr source, out Statvfs destination)
 		{

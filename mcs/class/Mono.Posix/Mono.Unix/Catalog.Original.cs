@@ -37,9 +37,17 @@ using System.Runtime.InteropServices;
 
 namespace Mono.Unix {
 
-	public partial class Catalog {
+	public class Catalog {
 		private Catalog () {}
 
+		[DllImport("intl")]
+		static extern IntPtr bindtextdomain (IntPtr domainname, IntPtr dirname);
+		[DllImport("intl")]
+		static extern IntPtr bind_textdomain_codeset (IntPtr domainname,
+			IntPtr codeset);
+		[DllImport("intl")]
+		static extern IntPtr textdomain (IntPtr domainname);
+		
 		public static void Init (String package, String localedir)
 		{
 			IntPtr ipackage, ilocaledir, iutf8;
@@ -83,6 +91,9 @@ namespace Mono.Unix {
 			}
 		}
 	
+		[DllImport("intl")]
+		static extern IntPtr gettext (IntPtr instring);
+		
 		public static String GetString (String s)
 		{
 			IntPtr ints = UnixMarshal.StringToHeap (s);
@@ -98,6 +109,9 @@ namespace Mono.Unix {
 			}
 		}
 	
+		[DllImport("intl")]
+		static extern IntPtr ngettext (IntPtr singular, IntPtr plural, Int32 n);
+		
 		public static String GetPluralString (String s, String p, Int32 n)
 		{
 			IntPtr ints, intp, _ignore;
