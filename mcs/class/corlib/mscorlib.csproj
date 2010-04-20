@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{0f2b6066-7fed-46ea-84dd-44c3233991b9}</ProjectGuid>
+    <ProjectGuid>{05e21493-9ce3-43d6-a04d-82632a44c469}</ProjectGuid>
     <OutputType>library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>corlib</RootNamespace>
-    <AssemblyName>corlib</AssemblyName>
+    <RootNamespace>mscorlib</RootNamespace>
+    <AssemblyName>mscorlib</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <NoStdLib>True</NoStdLib>

@@ -5,7 +5,7 @@
 		<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
 		<ProductVersion>9.0.30729</ProductVersion>
 		<SchemaVersion>2.0</SchemaVersion>
-		<ProjectGuid>{0d90b4bb-3f2c-428d-b563-e152a743b60f}</ProjectGuid>
+		<ProjectGuid>{4ca4404d-8de6-4426-9f38-56f111490886}</ProjectGuid>
 		<OutputType>library</OutputType>
 		<AppDesignerFolder>Properties</AppDesignerFolder>
 		<RootNamespace>System.XML</RootNamespace>
@@ -426,8 +426,8 @@
 		<Compile Include="Mono.Xml.Xsl\PatternTokenizer.cs" />
 	</ItemGroup>
 	<ItemGroup>
-		<ProjectReference Include="..\corlib\corlib.csproj">
-			<Name>corlib</Name>
+		<ProjectReference Include="..\corlib\mscorlib.csproj">
+			<Name>mscorlib</Name>
 		</ProjectReference>
 		<ProjectReference Include="..\System\System.csproj">
 			<Name>System</Name>

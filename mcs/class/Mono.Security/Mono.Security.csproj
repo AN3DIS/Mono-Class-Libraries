@@ -5,7 +5,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{336f6071-26d1-441b-8807-a80ed55a3e7d}</ProjectGuid>
+    <ProjectGuid>{4cdf4e71-50cc-4af0-81bd-b4a05a679a66}</ProjectGuid>
     <OutputType>library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Mono.Security</RootNamespace>
@@ -172,8 +172,8 @@
     <Compile Include=".\Mono.Security.Cryptography\KeyPairPersistence.Mosa.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\corlib\corlib.csproj">
-      <Name>corlib</Name>
+    <ProjectReference Include="..\corlib\mscorlib.csproj">
+      <Name>mscorlib</Name>
     </ProjectReference>
     <ProjectReference Include="..\System\System.csproj">
       <Name>System</Name>

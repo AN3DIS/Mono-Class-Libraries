@@ -5,7 +5,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{26082026-a4b6-4446-b631-36bb2a6187b4}</ProjectGuid>
+    <ProjectGuid>{a253638f-acac-45ad-86ff-8c11e79a90b5}</ProjectGuid>
     <OutputType>library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>System.Core</RootNamespace>
@@ -143,8 +143,8 @@
     <Compile Include="System.IO.Pipes\PipeWin32.Mosa.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\corlib\corlib.csproj">
-      <Name>corlib</Name>
+    <ProjectReference Include="..\corlib\mscorlib.csproj">
+      <Name>mscorlib</Name>
     </ProjectReference>
     <ProjectReference Include="..\System\System.csproj">
       <Name>System</Name>
