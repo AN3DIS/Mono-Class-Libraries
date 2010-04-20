@@ -5,7 +5,7 @@
 		<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
 		<ProductVersion>9.0.30729</ProductVersion>
 		<SchemaVersion>2.0</SchemaVersion>
-		<ProjectGuid>{dd038987-11c0-4e3c-852b-0425673f8d4c}</ProjectGuid>
+		<ProjectGuid>{0d90b4bb-3f2c-428d-b563-e152a743b60f}</ProjectGuid>
 		<OutputType>library</OutputType>
 		<AppDesignerFolder>Properties</AppDesignerFolder>
 		<RootNamespace>System.XML</RootNamespace>
@@ -422,8 +422,8 @@
 		<Compile Include="System.Xml.Serialization.Configuration\XmlSerializerSection.cs" />
 		<Compile Include="System.Xml\XQueryConvert.cs" />
 		<Compile Include="System.Xml.XPath\Parser.cs" />
-		<Compile Include="System.Xml.XPath\PatternParser.cs" />
-		<Compile Include="System.Xml.XPath\PatternTokenizer.cs" />
+		<Compile Include="Mono.Xml.Xsl\PatternParser.cs" />
+		<Compile Include="Mono.Xml.Xsl\PatternTokenizer.cs" />
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\corlib\corlib.csproj">
