@@ -57,4 +57,3 @@ namespace System.IO.Ports
 
 	}
 }
-#endif

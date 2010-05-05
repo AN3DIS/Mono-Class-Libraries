@@ -766,6 +766,15 @@ namespace System.Reflection.Emit
 				}
 			}
 
+			//
+			// On classes, define a default constructor if not provided
+			//
+			if (!(IsInterface || IsValueType) && (ctors == null) && (tname != "<Module>") && 
+				(GetAttributeFlagsImpl () & TypeAttributes.Abstract | TypeAttributes.Sealed) != (TypeAttributes.Abstract | TypeAttributes.Sealed) && !has_ctor_method ())
+				DefineDefaultConstructor (MethodAttributes.Public);
+
+			createTypeCalled = true;
+
 			if ((parent != null) && parent.IsSealed)
 				throw new TypeLoadException ("Could not load type '" + FullName + "' from assembly '" + Assembly + "' because the parent type is sealed.");
 
@@ -783,19 +792,11 @@ namespace System.Reflection.Emit
 				}
 			}
 
-			//
-			// On classes, define a default constructor if not provided
-			//
-			if (!(IsInterface || IsValueType) && (ctors == null) && (tname != "<Module>") && 
-				(GetAttributeFlagsImpl () & TypeAttributes.Abstract | TypeAttributes.Sealed) != (TypeAttributes.Abstract | TypeAttributes.Sealed) && !has_ctor_method ())
-				DefineDefaultConstructor (MethodAttributes.Public);
-
 			if (ctors != null){
 				foreach (ConstructorBuilder ctor in ctors) 
 					ctor.fixup ();
 			}
 
-			createTypeCalled = true;
 			created = create_runtime_class (this);
 			if (created != null)
 				return created;
@@ -1454,9 +1455,10 @@ namespace System.Reflection.Emit
 					// we should ignore it since it can be any value anyway...
 					throw new Exception ("Error in customattr");
 				}
-				string first_type_name = customBuilder.Ctor.GetParameters()[0].ParameterType.FullName;
+				
+				var ctor_type = customBuilder.Ctor is ConstructorBuilder ? ((ConstructorBuilder)customBuilder.Ctor).parameters[0] : customBuilder.Ctor.GetParameters()[0].ParameterType;
 				int pos = 6;
-				if (first_type_name == "System.Int16")
+				if (ctor_type.FullName == "System.Int16")
 					pos = 4;
 				int nnamed = (int)data [pos++];
 				nnamed |= ((int)data [pos++]) << 8;
@@ -1648,7 +1650,7 @@ namespace System.Reflection.Emit
 
 		internal bool is_created {
 			get {
-				return created != null;
+				return createTypeCalled;
 			}
 		}
 
