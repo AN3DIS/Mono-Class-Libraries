@@ -74,6 +74,14 @@ namespace System
 		
 		[MethodImplAttribute (MethodImplOptions.InternalCall)]
 		private extern static void RecordPressure (long bytesAllocated);
+#endif
+		
+#if NET_4_0 || BOOTSTRAP_NET_4_0 || MOONLIGHT
+		[MethodImplAttribute (MethodImplOptions.InternalCall)]
+		internal extern static void register_ephemeron_array (Ephemeron[] array);
+		
+		[MethodImplAttribute (MethodImplOptions.InternalCall)]
+		extern static object get_ephemeron_tombstone ();
 
 	}
 }

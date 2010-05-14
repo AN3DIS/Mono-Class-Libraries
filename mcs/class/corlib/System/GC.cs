@@ -108,5 +108,10 @@ namespace System
 			throw new NotImplementedException ();
 		}
 #endif
+
+#if NET_4_0 || BOOTSTRAP_NET_4_0 || MOONLIGHT
+
+		internal static readonly object EPHEMERON_TOMBSTONE = get_ephemeron_tombstone ();
+#endif
 	}
 }

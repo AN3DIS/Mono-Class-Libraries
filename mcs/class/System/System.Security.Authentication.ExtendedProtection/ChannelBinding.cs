@@ -1,11 +1,12 @@
 //
-// X509KeyUsageFlags.cs - System.Security.Cryptography.X509Certificates.X509KeyUsageFlags
+// ChannelBinding.cs 
 //
-// Author:
-//	Sebastien Pouliot  <sebastien@ximian.com>
+// Authors:
+//      Marek Habersack <mhabersack@novell.com>
 //
-// (C) 2003 Motus Technologies Inc. (http://www.motus.com)
-// Copyright (C) 2004-2005 Novell Inc. (http://www.novell.com)
+
+//
+// Copyright (C) 2010 Novell, Inc (http://novell.com)
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -26,24 +27,25 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
+#if NET_4_0
+using System;
+using Microsoft.Win32.SafeHandles;
 
-#if SECURITY_DEP || MOONLIGHT
+namespace System.Security.Authentication.ExtendedProtection
+{
+	public abstract class ChannelBinding : SafeHandleZeroOrMinusOneIsInvalid
+	{
+		public abstract int Size { get; }
+		
+		protected ChannelBinding ()
+			: this (true)
+		{
+		}
 
-namespace System.Security.Cryptography.X509Certificates {
-
-	[Flags]
-	public enum X509KeyUsageFlags {
-		None = 0,
-		EncipherOnly = 1,
-		CrlSign = 2,
-		KeyCertSign = 4,
-		KeyAgreement = 8,
-		DataEncipherment = 16,
-		KeyEncipherment = 32,
-		NonRepudiation = 64,
-		DigitalSignature = 128,
-		DecipherOnly = 32768
+		protected ChannelBinding (bool ownsHandle)
+			: base (ownsHandle)
+		{
+		}
 	}
 }
-
 #endif

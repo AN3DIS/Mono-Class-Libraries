@@ -88,10 +88,8 @@ namespace Mono.Security.X509 {
 				
 				for (int i = 0; i < certCount; i++){
 					secCerts [i] = SecCertificateCreateWithData (IntPtr.Zero, cfDataPtrs [i]);
-					if (secCerts [i] == IntPtr.Zero){
-						CFRelease (cfDataPtrs [i]);
+					if (secCerts [i] == IntPtr.Zero)
 						return SecTrustResult.Deny;
-					}
 				}
 				certArray = FromIntPtrs (secCerts);
 				IntPtr sectrust;
@@ -103,18 +101,21 @@ namespace Mono.Security.X509 {
 						return SecTrustResult.Deny;
 
 					CFRelease (sectrust);
-					CFRelease (sslsecpolicy);
 					
 					return result;
 				}
 				return SecTrustResult.Deny;
 			} finally {
 				for (int i = 0; i < certCount; i++)
-					if (secCerts [i] != IntPtr.Zero)
+					if (cfDataPtrs [i] != IntPtr.Zero)
 						CFRelease (cfDataPtrs [i]);
 
 				if (certArray != IntPtr.Zero)
 					CFRelease (certArray);
+				else
+					for (int i = 0; i < certCount; i++)
+						if (secCerts [i] != IntPtr.Zero)
+							CFRelease (secCerts [i]);
 			}
 		}
 	}
