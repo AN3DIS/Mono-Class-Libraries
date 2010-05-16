@@ -5,7 +5,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{58ed0a28-e6ec-4eb6-a64f-46c35999a3c5}</ProjectGuid>
+    <ProjectGuid>{a40afa9e-5a77-4bd6-ba97-d5bc955c1ae7}</ProjectGuid>
     <OutputType>library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Mono.Security</RootNamespace>
