@@ -5,7 +5,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{ef077de8-c0f3-4820-911c-4e158a9357a7}</ProjectGuid>
+    <ProjectGuid>{7f5e5270-a2d4-42de-90ec-5c3ab447ffa7}</ProjectGuid>
     <OutputType>library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>mscorlib</RootNamespace>
@@ -487,6 +487,8 @@
     <Compile Include="System.IO.IsolatedStorage\IsolatedStorageFileEnumerator.cs" />
     <Compile Include="System.IO.IsolatedStorage\IsolatedStorageFileStream.cs" />
     <Compile Include="System.IO.IsolatedStorage\IsolatedStorageScope.cs" />
+    <Compile Include="System.IO.IsolatedStorage\IsolatedStorageSecurityOptions.cs" />
+    <Compile Include="System.IO.IsolatedStorage\IsolatedStorageSecurityState.cs" />
     <Compile Include="System.Reflection\AmbiguousMatchException.cs" />
     <Compile Include="System.Reflection\Assembly.cs" />
     <Compile Include="System.Reflection\AssemblyAlgorithmIdAttribute.cs" />

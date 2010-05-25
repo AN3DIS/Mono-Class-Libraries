@@ -56,6 +56,10 @@ namespace System.IO.IsolatedStorage {
 		private ulong _maxSize;
 		private Evidence _fullEvidences;
 		private static Mutex mutex = new Mutex ();
+#if NET_4_0
+		private bool closed;
+		private bool disposed;
+#endif
 
 		public static IEnumerator GetEnumerator (IsolatedStorageScope scope)
 		{
@@ -392,11 +396,17 @@ namespace System.IO.IsolatedStorage {
 		}
 
 		[CLSCompliant(false)]
+#if NET_4_0
+		[Obsolete]
+#endif
 		public override ulong CurrentSize {
 			get { return GetDirectorySize (directory); }
 		}
 
 		[CLSCompliant(false)]
+#if NET_4_0
+		[Obsolete]
+#endif
 		public override ulong MaximumSize {
 			// return an ulong but default is signed long
 			get {
@@ -444,10 +454,34 @@ namespace System.IO.IsolatedStorage {
 			get { return directory.FullName; }
 		}
 
+#if NET_4_0
+		[ComVisible (false)]
+		public static bool IsEnabled {
+			get {
+				return true;
+			}
+		}
+
+		internal bool IsClosed {
+			get {
+				return closed;
+			}
+		}
+
+		internal bool IsDisposed {
+			get {
+				return disposed;
+			}
+		}
+#endif
+
 		// methods
 
 		public void Close ()
 		{
+#if NET_4_0
+			closed = true;
+#endif
 		}
 
 		public void CreateDirectory (string dir)
@@ -472,6 +506,14 @@ namespace System.IO.IsolatedStorage {
 			}
 		}
 
+#if NET_4_0
+		[ComVisible (false)]
+		public IsolatedStorageFileStream CreateFile (string path)
+		{
+			return new IsolatedStorageFileStream (path, FileMode.Create, FileAccess.ReadWrite, FileShare.None, this);
+		}
+#endif
+
 		public void DeleteDirectory (string dir)
 		{
 			try {
@@ -491,9 +533,41 @@ namespace System.IO.IsolatedStorage {
 
 		public void Dispose ()
 		{
+#if NET_4_0
+			// Dispose may be calling Close, but we are not sure
+			disposed = true;
+#endif
 			// nothing to dispose, anyway we want to please the tools
 			GC.SuppressFinalize (this);
 		}
+
+#if NET_4_0
+		[ComVisible (false)]
+		public bool DirectoryExists (string path)
+		{
+			if (path == null)
+				throw new ArgumentNullException ("path");
+			if (disposed)
+				throw new ObjectDisposedException ("IsolatedStorageFile");
+			if (closed)
+				throw new InvalidOperationException ("Storage needs to be open for this operation.");
+
+			return Directory.Exists (Path.Combine (directory.FullName, path));
+		}
+
+		[ComVisible (false)]
+		public bool FileExists (string path)
+		{
+			if (path == null)
+				throw new ArgumentNullException ("path");
+			if (disposed)
+				throw new ObjectDisposedException ("IsolatedStorageFile");
+			if (closed)
+				throw new InvalidOperationException ("Storage needs to be open for this operation.");
+
+			return File.Exists (Path.Combine (directory.FullName, path));
+		}
+#endif
 
 		public string[] GetDirectoryNames (string searchPattern)
 		{
@@ -521,6 +595,14 @@ namespace System.IO.IsolatedStorage {
 			 
 			return GetNames (adi);
 		}
+
+#if NET_4_0
+		[ComVisible (false)]
+		public string [] GetDirectoryNames ()
+		{
+			return GetDirectoryNames ("*");
+		}
+#endif
 
 		private string[] GetNames (FileSystemInfo[] afsi)
 		{
@@ -556,6 +638,64 @@ namespace System.IO.IsolatedStorage {
 
 			return GetNames (afi);
 		}
+
+#if NET_4_0
+		[ComVisible (false)]
+		public string [] GetFileNames ()
+		{
+			return GetFileNames ("*");
+		}
+
+		[ComVisible (false)]
+		public void MoveDirectory (string sourceDirectoryName, string destinationDirectoryName)
+		{
+			if (sourceDirectoryName == null)
+				throw new ArgumentNullException ("sourceDirectoryName");
+			if (destinationDirectoryName == null)
+				throw new ArgumentNullException ("sourceDirectoryName");
+			if (disposed)
+				throw new ObjectDisposedException ("IsolatedStorageFile");
+			if (closed)
+				throw new InvalidOperationException ("Storage needs to be open for this operation.");
+
+			Directory.Move (Path.Combine (directory.FullName, sourceDirectoryName),
+					Path.Combine (directory.FullName, destinationDirectoryName));
+		}
+
+		[ComVisible (false)]
+		public void MoveFile (string sourceFileName, string destinationFileName)
+		{
+			if (sourceFileName == null)
+				throw new ArgumentNullException ("sourceFileName");
+			if (destinationFileName == null)
+				throw new ArgumentNullException ("sourceFileName");
+			if (disposed)
+				throw new ObjectDisposedException ("IsolatedStorageFile");
+			if (closed)
+				throw new InvalidOperationException ("Storage needs to be open for this operation.");
+
+			File.Move (Path.Combine (directory.FullName, sourceFileName),
+					Path.Combine (directory.FullName, destinationFileName));
+		}
+
+		[ComVisible (false)]
+		public IsolatedStorageFileStream OpenFile (string path, FileMode mode)
+		{
+			return new IsolatedStorageFileStream (path, mode, this);
+		}
+
+		[ComVisible (false)]
+		public IsolatedStorageFileStream OpenFile (string path, FileMode mode, FileAccess access)
+		{
+			return new IsolatedStorageFileStream (path, mode, access, this);
+		}
+
+		[ComVisible (false)]
+		public IsolatedStorageFileStream OpenFile (string path, FileMode mode, FileAccess access, FileShare share)
+		{
+			return new IsolatedStorageFileStream (path, mode, access, share, this);
+		}
+#endif
 
 		public override void Remove ()
 		{
