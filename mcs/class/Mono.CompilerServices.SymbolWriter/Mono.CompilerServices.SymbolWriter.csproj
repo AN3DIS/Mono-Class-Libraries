@@ -5,7 +5,7 @@
 		<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
 		<ProductVersion>9.0.30729</ProductVersion>
 		<SchemaVersion>2.0</SchemaVersion>
-		<ProjectGuid>{ca38cb12-ead9-4cdd-afb9-0a29ce7078d2}</ProjectGuid>
+		<ProjectGuid>{48fe62f9-922a-40f4-b5a3-b3e9a767af7f}</ProjectGuid>
 		<OutputType>library</OutputType>
 		<AppDesignerFolder>Properties</AppDesignerFolder>
 		<RootNamespace>Mono.CompilerServices.SymbolWriter</RootNamespace>

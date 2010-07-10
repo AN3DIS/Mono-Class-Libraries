@@ -47,8 +47,10 @@ namespace Microsoft.Win32
 	 partial class Win32RegistryApi
 	{
 		
-		[DllImport ("advapi32.dll", CharSet=CharSet.Unicode, EntryPoint="RegCreateKey")]
-		static extern int RegCreateKey (IntPtr keyBase, string keyName, out IntPtr keyHandle);
+		[DllImport ("advapi32.dll", CharSet=CharSet.Unicode, EntryPoint="RegCreateKeyEx")]
+		static extern int RegCreateKeyEx (IntPtr keyBase, string keyName, int reserved, 
+		IntPtr lpClass, int options, int access, IntPtr securityAttrs,
+		out IntPtr keyHandle, out int disposition);
 		
 		[DllImport ("advapi32.dll", CharSet=CharSet.Unicode, EntryPoint="RegCloseKey")]
 		static extern int RegCloseKey (IntPtr keyHandle);

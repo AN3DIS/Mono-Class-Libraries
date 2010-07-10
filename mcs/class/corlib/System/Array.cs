@@ -45,7 +45,7 @@ namespace System
 	[ComVisible (true)]
 	// FIXME: We are doing way to many double/triple exception checks for the overloaded functions"
 	public abstract partial class Array : ICloneable, ICollection, IList, IEnumerable
-#if NET_4_0
+#if NET_4_0 || MOONLIGHT
 		, IStructuralComparable, IStructuralEquatable
 #endif
 	{
@@ -197,6 +197,10 @@ namespace System
 			}
 			SetGenericValueImpl (index, ref item);
 		}
+
+		// CAUTION! No bounds checking!
+
+		// CAUTION! No bounds checking!
 
 		internal struct InternalEnumerator<T> : IEnumerator<T>
 		{
@@ -361,6 +365,10 @@ namespace System
 			return GetLength (dimension);
 		}
 
+		// CAUTION! No bounds checking!
+
+		// CAUTION! No bounds checking!
+
 		// Properties
 		int ICollection.Count {
 			get {
@@ -397,7 +405,7 @@ namespace System
 			return new SimpleEnumerator (this);
 		}
 
-#if NET_4_0
+#if NET_4_0 || MOONLIGHT
 		int IStructuralComparable.CompareTo (object other, IComparer comparer)
 		{
 			if (other == null)
@@ -1287,7 +1295,7 @@ namespace System
 			int high = index + length - 1;
 			
 #if !BOOTSTRAP_BASIC			
-			if (comparer == null) {
+			if (comparer == null && items is object[]) {
 				if (keys is int[]) {
 					qsort (keys as int[], items as object[], low, high);
 					return;

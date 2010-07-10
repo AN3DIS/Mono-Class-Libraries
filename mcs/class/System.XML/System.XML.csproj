@@ -5,7 +5,7 @@
 		<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
 		<ProductVersion>9.0.30729</ProductVersion>
 		<SchemaVersion>2.0</SchemaVersion>
-		<ProjectGuid>{ff2bc586-7e10-454e-aa06-c94163b2a5f9}</ProjectGuid>
+		<ProjectGuid>{3debf204-62f3-439b-bfa5-54ef2069550b}</ProjectGuid>
 		<OutputType>library</OutputType>
 		<AppDesignerFolder>Properties</AppDesignerFolder>
 		<RootNamespace>System.XML</RootNamespace>
@@ -121,6 +121,7 @@
 		<Compile Include="System.Xml\DTDObjectModel.cs" />
 		<Compile Include="System.Xml\DTDReader.cs" />
 		<Compile Include="System.Xml\DTDValidatingReader2.cs" />
+		<Compile Include="System.Xml\DefaultXmlWriter.cs" />
 		<Compile Include="System.Xml\EntityResolvingXmlReader.cs" />
 		<Compile Include="System.Xml\EntityHandling.cs" />
 		<Compile Include="System.Xml\Formatting.cs" />

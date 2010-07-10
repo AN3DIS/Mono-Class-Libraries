@@ -45,10 +45,6 @@ namespace System
 	public partial class Environment
 	{
 		
-		
-		/// <summary>
-		/// Gets or sets the exit code of this process
-		/// </summary>
 		public extern static int ExitCode
 		{	
 		[MethodImplAttribute (MethodImplOptions.InternalCall)]
@@ -62,20 +58,14 @@ namespace System
 		[MethodImplAttribute (MethodImplOptions.InternalCall)]
 		get;
 		}
-
-		/// <summary>
-		/// Gets the name of the local computer
-		/// </summary>
+		
 		public extern static string MachineName {
 		[MethodImplAttribute (MethodImplOptions.InternalCall)]
 		[EnvironmentPermission (SecurityAction.Demand, Read="COMPUTERNAME")]
 		[SecurityPermission (SecurityAction.Demand, UnmanagedCode=true)]
 		get;
 		}
-
-		/// <summary>
-		/// Gets the standard new line value
-		/// </summary>
+		
 		public extern static string NewLine {
 		[MethodImplAttribute (MethodImplOptions.InternalCall)]
 		get;
@@ -88,20 +78,13 @@ namespace System
 		
 		[MethodImplAttribute (MethodImplOptions.InternalCall)]
 		internal static extern string GetOSVersionString ();
-
-		/// <summary>
-		/// Get the number of milliseconds that have elapsed since the system was booted
-		/// </summary>
+#endif
 		public extern static int TickCount {
 		[MethodImplAttribute (MethodImplOptions.InternalCall)]
 		get;
 		}
-
-		/// <summary>
-		/// Get the user name of current process is running under
-		/// </summary>
-		public extern static string UserName
-		{
+		
+		public extern static string UserName {
 		[MethodImplAttribute (MethodImplOptions.InternalCall)]
 		[EnvironmentPermission (SecurityAction.Demand, Read="USERNAME;USER")]
 		get;
@@ -110,16 +93,14 @@ namespace System
 		[MethodImplAttribute (MethodImplOptions.InternalCall)]
 		[SecurityPermission (SecurityAction.Demand, UnmanagedCode=true)]
 		public extern static void Exit (int exitCode);
-
-		/// <summary>
-		/// Return an array of the command line arguments of the current process
-		/// </summary>
+		
 		[MethodImplAttribute (MethodImplOptions.InternalCall)]
 		[EnvironmentPermissionAttribute (SecurityAction.Demand, Read = "PATH")]
 		public extern static string[] GetCommandLineArgs ();
 		
 		[MethodImplAttribute (MethodImplOptions.InternalCall)]
 		internal extern static string internalGetEnvironmentVariable (string variable);
+#endif
 		
 		[MethodImplAttribute (MethodImplOptions.InternalCall)]
 		private extern static string GetWindowsFolderPath (int folder);
@@ -140,7 +121,7 @@ namespace System
 #pragma warning restore 169
 		[MethodImplAttribute (MethodImplOptions.InternalCall)]
 		internal extern static string internalGetGacPath ();
-
+#endif
 		[MethodImplAttribute (MethodImplOptions.InternalCall)]
 		private extern static string [] GetLogicalDrivesInternal ();
 		

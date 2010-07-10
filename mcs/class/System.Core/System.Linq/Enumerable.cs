@@ -2203,17 +2203,17 @@ namespace System.Linq
 		{
 			Check.Source (source);
 
+			return CreateReverseIterator (source);
+		}
+
+		static IEnumerable<TSource> CreateReverseIterator<TSource> (IEnumerable<TSource> source)
+		{
 			var list = source as IList<TSource>;
 			if (list == null)
 				list = new List<TSource> (source);
 
-			return CreateReverseIterator (list);
-		}
-
-		static IEnumerable<TSource> CreateReverseIterator<TSource> (IList<TSource> source)
-		{
-			for (int i = source.Count; i > 0; --i)
-				yield return source [i - 1];
+			for (int i = list.Count - 1; i >= 0; i--)
+				yield return list [i];
 		}
 
 		#endregion
@@ -2972,7 +2972,7 @@ namespace System.Linq
 
 		#endregion
 		
-#if NET_4_0		
+#if NET_4_0 || MOONLIGHT
 		#region Zip
 		
 		public static IEnumerable<TResult> Zip<TFirst, TSecond, TResult> (this IEnumerable<TFirst> first, IEnumerable<TSecond> second, Func<TFirst, TSecond, TResult> resultSelector)

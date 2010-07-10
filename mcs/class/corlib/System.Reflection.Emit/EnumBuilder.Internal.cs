@@ -42,6 +42,7 @@ namespace System.Reflection.Emit
 {
 	public partial class EnumBuilder
 	{
+#endif
 		
 		[MethodImplAttribute(MethodImplOptions.InternalCall)]
 		private extern void setup_enum_type (Type t);

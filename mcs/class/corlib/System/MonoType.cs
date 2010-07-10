@@ -33,6 +33,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using System.Security;
@@ -614,6 +615,12 @@ namespace System
 		public override bool IsSecuritySafeCritical
 		{
 			get { return get_core_clr_security_level () == 1; }
+		}
+
+		public override StructLayoutAttribute StructLayoutAttribute {
+			get {
+				return GetStructLayoutAttribute ();
+			}
 		}
 #endif
 

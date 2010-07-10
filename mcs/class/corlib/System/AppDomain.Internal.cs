@@ -61,10 +61,12 @@ namespace System
 		
 		[MethodImplAttribute (MethodImplOptions.InternalCall)]
 		private extern AppDomainSetup getSetup ();
+#endif
 		
 		[MethodImplAttribute (MethodImplOptions.InternalCall)]
 		private extern string getFriendlyName ();
-
+#endif
+		
 		[MethodImplAttribute (MethodImplOptions.InternalCall)]
 		private static extern AppDomain getCurDomain ();
 		
@@ -85,35 +87,29 @@ namespace System
 		
 		[MethodImplAttribute (MethodImplOptions.InternalCall)]
 		internal extern Assembly LoadAssemblyRaw (byte[] rawAssembly, byte[] rawSymbolStore, Evidence securityEvidence, bool refonly);
-
+#endif
 		[MethodImplAttribute (MethodImplOptions.InternalCall)]
 		private static extern AppDomain InternalSetDomainByID (int domain_id);
-
-		// Changes the active domain and returns the old domain
-		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		
+		[MethodImplAttribute (MethodImplOptions.InternalCall)]
 		private static extern AppDomain InternalSetDomain (AppDomain context);
-
-		// Notifies the runtime that this thread references 'domain'.
-		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		
+		[MethodImplAttribute (MethodImplOptions.InternalCall)]
 		internal static extern void InternalPushDomainRef (AppDomain domain);
 		
 		[MethodImplAttribute (MethodImplOptions.InternalCall)]
 		internal static extern void InternalPushDomainRefByID (int domain_id);
-
-		// Undoes the effect of the last PushDomainRef call
-		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		
+		[MethodImplAttribute (MethodImplOptions.InternalCall)]
 		internal static extern void InternalPopDomainRef ();
-
-		// Changes the active context and returns the old context
-		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		
+		[MethodImplAttribute (MethodImplOptions.InternalCall)]
 		internal static extern Context InternalSetContext (Context context);
-
-		// Returns the current context
-		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		
+		[MethodImplAttribute (MethodImplOptions.InternalCall)]
 		internal static extern Context InternalGetContext ();
-
-		// Returns the current context
-		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		
+		[MethodImplAttribute (MethodImplOptions.InternalCall)]
 		internal static extern Context InternalGetDefaultContext ();
 		
 		[MethodImplAttribute (MethodImplOptions.InternalCall)]
@@ -121,6 +117,7 @@ namespace System
 		
 		[MethodImplAttribute (MethodImplOptions.InternalCall)]
 		private static extern AppDomain createDomain (string friendlyName, AppDomainSetup info);
+#endif // !NET_2_1
 		
 		[MethodImplAttribute (MethodImplOptions.InternalCall)]
 		private static extern bool InternalIsFinalizingForUnload (int domain_id);

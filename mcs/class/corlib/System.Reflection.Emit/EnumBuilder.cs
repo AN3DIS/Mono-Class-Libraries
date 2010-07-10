@@ -163,6 +163,13 @@ namespace System.Reflection.Emit {
 			return res;
 		}
 
+#if NET_4_0
+		public override Type GetEnumUnderlyingType ()
+		{
+			return _underlyingType;
+		}
+#endif
+
 		public FieldBuilder DefineLiteral (string literalName, object literalValue)
 		{
 			Type fieldType = this;

@@ -51,8 +51,10 @@ namespace System.Reflection {
 	[ComDefaultInterfaceAttribute (typeof (_Assembly))]
 	[Serializable]
 	[ClassInterface(ClassInterfaceType.None)]
-#if NET_2_1
+#if MONOTOUCH
 	public partial class Assembly : ICustomAttributeProvider, _Assembly {
+#elif MOONLIGHT
+	public abstract class Assembly : ICustomAttributeProvider, _Assembly {
 #elif NET_4_0
 	public abstract class Assembly : ICustomAttributeProvider, _Assembly, IEvidenceFactory, ISerializable {
 #else
@@ -77,7 +79,7 @@ namespace System.Reflection {
 		private bool fromByteArray;
 		private string assemblyName;
 
-#if NET_4_0
+#if NET_4_0 || MOONLIGHT
 		protected
 #else
 		internal
@@ -495,12 +497,16 @@ namespace System.Reflection {
 		// FIXME: What are we missing?
 		public static Assembly LoadFrom (String assemblyFile, Evidence securityEvidence, byte[] hashValue, AssemblyHashAlgorithm hashAlgorithm)
 		{
-			if (assemblyFile == null)
-				throw new ArgumentNullException ("assemblyFile");
-			if (assemblyFile == String.Empty)
-				throw new ArgumentException ("Name can't be the empty string", "assemblyFile");
 			throw new NotImplementedException ();
 		}
+
+#if NET_4_0
+		[MonoTODO]
+		public static Assembly LoadFrom (String assemblyFile, byte [] hashValue, AssemblyHashAlgorithm hashAlgorithm)
+		{
+			throw new NotImplementedException ();
+		}
+#endif
 
 #if NET_4_0
 		[Obsolete]
@@ -565,6 +571,14 @@ namespace System.Reflection {
 			return AppDomain.CurrentDomain.Load (rawAssembly, rawSymbolStore, securityEvidence);
 		}
 
+#if NET_4_0
+		[MonoLimitation ("Argument securityContextSource is ignored")]
+		public static Assembly Load (byte [] rawAssembly, byte [] rawSymbolStore, SecurityContextSource securityContextSource)
+		{
+			return AppDomain.CurrentDomain.Load (rawAssembly, rawSymbolStore);
+		}
+#endif
+
 		public static Assembly ReflectionOnlyLoad (byte[] rawAssembly)
 		{
 			return AppDomain.CurrentDomain.Load (rawAssembly, null, null, true);
@@ -599,7 +613,7 @@ namespace System.Reflection {
 
 		[MonoTODO ("Not implemented")]
 		public
-#if NET_4_0
+#if NET_4_0 || MOONLIGHT
 		virtual
 #endif
 		Module LoadModule (string moduleName, byte [] rawModule, byte [] rawSymbolStore)
@@ -656,7 +670,7 @@ namespace System.Reflection {
 		}
 
 		public
-#if NET_4_0
+#if NET_4_0 || MOONLIGHT
 		virtual
 #endif
 		Object CreateInstance (String typeName, Boolean ignoreCase,
@@ -746,7 +760,7 @@ namespace System.Reflection {
 		[MonoTODO ("Currently it always returns zero")]
 		[ComVisible (false)]
 		public
-#if NET_4_0
+#if NET_4_0 || MOONLIGHT
 		virtual
 #endif
 		long HostContext {
@@ -780,8 +794,13 @@ namespace System.Reflection {
 		}
 		
 #if NET_4_0
+#if MOONLIGHT
 		public virtual IList<CustomAttributeData> GetCustomAttributesData () {
 			return CustomAttributeData.GetCustomAttributes (this);
+		}
+#endif
+		public PermissionSet PermissionSet {
+			get { return this.GrantedPermissionSet; }
 		}
 #endif
 
@@ -868,7 +887,7 @@ namespace System.Reflection {
 		}
 #endif
 
-#if NET_4_0
+#if NET_4_0 || MOONLIGHT
 		static Exception CreateNIE ()
 		{
 			return new NotImplementedException ("Derived classes must implement it");

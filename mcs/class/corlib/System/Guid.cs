@@ -4,9 +4,10 @@
 // Authors:
 //	Duco Fijma (duco@lorentz.xs4all.nl)
 //	Sebastien Pouliot (sebastien@ximian.com)
+//	Jb Evain (jbevain@novell.com)
 //
 // (C) 2002 Duco Fijma
-// Copyright (C) 2004-2005 Novell, Inc (http://www.novell.com)
+// Copyright (C) 2004-2010 Novell, Inc (http://www.novell.com)
 //
 // References
 // 1.	UUIDs and GUIDs (DRAFT), Section 3.4
@@ -153,6 +154,9 @@ namespace System {
 				if (format == Format.P && !ParseChar (')'))
 					return false;
 
+				if (!Eof)
+					return false;
+
 				guid = new Guid ((int) a, (short) b, (short) c, d);
 				return true;
 			}
@@ -191,6 +195,9 @@ namespace System {
 				}
 
 				if (!(ParseChar ('}') && ParseChar ('}')))
+					return false;
+
+				if (!Eof)
 					return false;
 
 				guid = new Guid ((int) a, (short) b, (short) c, d);
@@ -660,7 +667,7 @@ namespace System {
 			return !( a.Equals (b) );
 		}
 
-#if NET_4_0
+#if NET_4_0 || MOONLIGHT
 		public static Guid Parse (string input)
 		{
 			Guid guid;

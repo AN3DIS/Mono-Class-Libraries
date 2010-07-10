@@ -5,7 +5,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{7f5e5270-a2d4-42de-90ec-5c3ab447ffa7}</ProjectGuid>
+    <ProjectGuid>{7ade3b25-40cc-451b-bcba-d7cb12761dd5}</ProjectGuid>
     <OutputType>library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>mscorlib</RootNamespace>
@@ -369,14 +369,17 @@
     <Compile Include="System.Diagnostics.Contracts\Contract.cs" />
     <Compile Include="System.Diagnostics.Contracts\ContractClassAttribute.cs" />
     <Compile Include="System.Diagnostics.Contracts\ContractClassForAttribute.cs" />
+    <Compile Include="System.Diagnostics.Contracts\ContractException.cs" />
     <Compile Include="System.Diagnostics.Contracts\ContractFailedEventArgs.cs" />
     <Compile Include="System.Diagnostics.Contracts\ContractFailureKind.cs" />
     <Compile Include="System.Diagnostics.Contracts\ContractInvariantMethodAttribute.cs" />
     <Compile Include="System.Diagnostics.Contracts\ContractPublicPropertyNameAttribute.cs" />
     <Compile Include="System.Diagnostics.Contracts\ContractReferenceAssemblyAttribute.cs" />
     <Compile Include="System.Diagnostics.Contracts\ContractRuntimeIgnoredAttribute.cs" />
+    <Compile Include="System.Diagnostics.Contracts\ContractShouldAssertException.cs" />
     <Compile Include="System.Diagnostics.Contracts\ContractVerificationAttribute.cs" />
     <Compile Include="System.Diagnostics.Contracts\PureAttribute.cs" />
+    <Compile Include="System.Diagnostics.Contracts.Internal\ContractHelper.cs" />
     <Compile Include="System.Diagnostics.SymbolStore\ISymbolBinder.cs" />
     <Compile Include="System.Diagnostics.SymbolStore\ISymbolBinder1.cs" />
     <Compile Include="System.Diagnostics.SymbolStore\ISymbolDocument.cs" />
@@ -1096,6 +1099,7 @@
     <Compile Include="System.Runtime.Serialization\IFormatter.cs" />
     <Compile Include="System.Runtime.Serialization\IFormatterConverter.cs" />
     <Compile Include="System.Runtime.Serialization\IObjectReference.cs" />
+    <Compile Include="System.Runtime.Serialization\ISafeSerializationData.cs" />
     <Compile Include="System.Runtime.Serialization\ISerializable.cs" />
     <Compile Include="System.Runtime.Serialization\ISerializationSurrogate.cs" />
     <Compile Include="System.Runtime.Serialization\ISurrogateSelector.cs" />
@@ -1106,6 +1110,7 @@
     <Compile Include="System.Runtime.Serialization\OnSerializedAttribute.cs" />
     <Compile Include="System.Runtime.Serialization\OnSerializingAttribute.cs" />
     <Compile Include="System.Runtime.Serialization\OptionalFieldAttribute.cs" />
+    <Compile Include="System.Runtime.Serialization\SafeSerializationEventArgs.cs" />
     <Compile Include="System.Runtime.Serialization\SerializationBinder.cs" />
     <Compile Include="System.Runtime.Serialization\SerializationCallbacks.cs" />
     <Compile Include="System.Runtime.Serialization\SerializationEntry.cs" />
@@ -1165,6 +1170,7 @@
     <Compile Include="System.Security\PolicyLevelType.cs" />
     <Compile Include="System.Security\SecureString.cs" />
     <Compile Include="System.Security\SecurityContext.cs" />
+    <Compile Include="System.Security\SecurityContextSource.cs" />
     <Compile Include="System.Security\SecurityCriticalAttribute.cs" />
     <Compile Include="System.Security\SecurityCriticalScope.cs" />
     <Compile Include="System.Security\SecurityElement.cs" />

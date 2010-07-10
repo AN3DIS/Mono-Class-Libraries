@@ -57,11 +57,7 @@ namespace System.Xml
 
 #if NET_2_0
 		public virtual XmlWriterSettings Settings {
-			get {
-				if (settings == null)
-					settings = new XmlWriterSettings ();
-				return settings;
-			}
+			get { return settings; }
 		}
 #endif
 
@@ -142,7 +138,36 @@ namespace System.Xml
 		{
 			if (settings == null)
 				settings = new XmlWriterSettings ();
-			writer.settings = settings;
+			else
+				settings = settings.Clone ();
+
+			var src = writer.Settings;
+			if (src == null) {
+				settings.ConformanceLevel = ConformanceLevel.Document; // Huh? Why??
+				writer = new DefaultXmlWriter (writer);
+				writer.settings = settings;
+			} else {
+				ConformanceLevel dst = src.ConformanceLevel;
+				switch (src.ConformanceLevel) {
+				case ConformanceLevel.Auto:
+					dst = settings.ConformanceLevel;
+					break;
+				case ConformanceLevel.Document:
+				case ConformanceLevel.Fragment:
+					if (settings.ConformanceLevel != ConformanceLevel.Auto)
+						dst = settings.ConformanceLevel;
+					break;
+				}
+
+				settings.MergeFrom (src);
+
+				// It returns a new XmlWriter instance if 1) Settings is null, or 2) Settings ConformanceLevel (or might be other members as well) give significant difference.
+				if (src.ConformanceLevel != dst) {
+					writer = new DefaultXmlWriter (writer, false);
+					writer.settings = settings;
+				}
+			}
+
 			return writer;
 		}
 

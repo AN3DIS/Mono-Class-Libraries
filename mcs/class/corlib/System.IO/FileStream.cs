@@ -144,16 +144,16 @@ namespace System.IO
 		}
 
 		public FileStream (string path, FileMode mode, FileAccess access, FileShare share, int bufferSize, bool useAsync)
-			: this (path, mode, access, share, bufferSize, useAsync, FileOptions.None)
+			: this (path, mode, access, share, bufferSize, useAsync ? FileOptions.Asynchronous : FileOptions.None)
 		{
 		}
 
-#if !NET_2_1
 		public FileStream (string path, FileMode mode, FileAccess access, FileShare share, int bufferSize, FileOptions options)
 			: this (path, mode, access, share, bufferSize, false, options)
 		{
 		}
 
+#if !NET_2_1
 		public FileStream (SafeFileHandle handle, FileAccess access)
 			:this(handle, access, DefaultBufferSize, false)
 		{

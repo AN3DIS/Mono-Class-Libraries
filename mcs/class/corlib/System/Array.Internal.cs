@@ -43,13 +43,11 @@ namespace System
 {
 	public partial class Array
 	{
-
-		// CAUTION! No bounds checking!
+		
 		[MethodImplAttribute (MethodImplOptions.InternalCall)]
 		internal extern void GetGenericValueImpl<T> (int pos, out T value);
-
-		// CAUTION! No bounds checking!
-		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		
+		[MethodImplAttribute (MethodImplOptions.InternalCall)]
 		internal extern void SetGenericValueImpl<T> (int pos, ref T value);
 		
 		[MethodImplAttribute (MethodImplOptions.InternalCall)]
@@ -61,13 +59,11 @@ namespace System
 		[ReliabilityContractAttribute (Consistency.WillNotCorruptState, Cer.Success)]
 		[MethodImplAttribute (MethodImplOptions.InternalCall)]
 		public extern int GetLowerBound (int dimension);
-
-		// CAUTION! No bounds checking!
-		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		
+		[MethodImplAttribute (MethodImplOptions.InternalCall)]
 		public extern object GetValue (params int[] indices);
-
-		// CAUTION! No bounds checking!
-		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		
+		[MethodImplAttribute (MethodImplOptions.InternalCall)]
 		public extern void SetValue (object value, params int[] indices);
 		
 		[MethodImplAttribute (MethodImplOptions.InternalCall)]

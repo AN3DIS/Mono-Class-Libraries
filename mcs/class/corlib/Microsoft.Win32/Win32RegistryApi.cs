@@ -361,7 +361,10 @@ namespace Microsoft.Win32
 		{
 			IntPtr handle = GetHandle (rkey);
 			IntPtr subKeyHandle;
-			int result = RegCreateKey (handle , keyName, out subKeyHandle);
+			int disposition;
+			int result = RegCreateKeyEx (handle , keyName, 0, IntPtr.Zero,
+				0,
+				OpenRegKeyRead | OpenRegKeyWrite, IntPtr.Zero, out subKeyHandle, out disposition);
 
 			if (result == Win32ResultCode.MarkedForDeletion)
 				throw RegistryKey.CreateMarkedForDeletionException ();

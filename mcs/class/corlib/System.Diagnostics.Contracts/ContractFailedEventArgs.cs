@@ -26,23 +26,22 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+#if NET_4_0
+
 using System;
+using System.Runtime.ConstrainedExecution;
 
 namespace System.Diagnostics.Contracts {
 
-#if NET_2_1 || NET_4_0
-	public
-#else
-	internal
-#endif
-	sealed class ContractFailedEventArgs : EventArgs {
+	public sealed class ContractFailedEventArgs : EventArgs {
 		
+		[ReliabilityContract (Consistency.WillNotCorruptState, Cer.Success)]
 		public ContractFailedEventArgs (ContractFailureKind failureKind, string message, string condition, Exception originalException)
 		{
 			Condition = condition;
 			FailureKind = failureKind;
 			Handled = false;
-			Unwind = true;
+			Unwind = false; // MS docs are incorrect - this should default to false.
 			Message = message;
 			OriginalException = originalException;
 		}
@@ -66,3 +65,4 @@ namespace System.Diagnostics.Contracts {
 	}
 }
 
+#endif

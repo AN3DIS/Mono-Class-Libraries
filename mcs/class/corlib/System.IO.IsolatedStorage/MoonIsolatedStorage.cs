@@ -37,7 +37,7 @@ using System.Text;
 
 namespace System.IO.IsolatedStorage {
 
-	static partial class IsolatedStorage {
+	internal static partial class IsolatedStorage {
 
 		// NOTE: both the 'site' and 'application' share the same quota
 		internal const long DefaultQuota = 1024 * 1024;

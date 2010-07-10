@@ -1193,7 +1193,7 @@ namespace System.Reflection.Emit
 			throw new NotImplementedException ();
 		}
 
-#if NET_4_0
+#if NET_4_0 || MOONLIGHT
 		public override Type GetType (string name, bool throwOnError, bool ignoreCase)
 		{
 			if (name == null)

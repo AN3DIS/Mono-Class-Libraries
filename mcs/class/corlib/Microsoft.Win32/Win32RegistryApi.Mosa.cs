@@ -21,7 +21,9 @@ namespace Microsoft.Win32
 {
 	 partial class Win32RegistryApi
 	{
-		static int RegCreateKey (IntPtr keyBase, string keyName, out IntPtr keyHandle)
+		static int RegCreateKeyEx (IntPtr keyBase, string keyName, int reserved,
+		IntPtr lpClass, int options, int access, IntPtr securityAttrs,
+		out IntPtr keyHandle, out int disposition)
 		{
 			throw new System.NotImplementedException();
 		}
@@ -102,4 +104,5 @@ namespace Microsoft.Win32
 
 	}
 }
+
 #endif
