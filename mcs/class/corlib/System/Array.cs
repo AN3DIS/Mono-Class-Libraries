@@ -1330,10 +1330,9 @@ namespace System
 				}				
 			}
 #endif
-			
-			low = MoveNullKeysToFront (keys, items, low, high, comparer == null);
-			if (low == high)
-				return;
+
+			if (comparer == null)
+				CheckComparerAvailable (keys, low, high);
  
 			try {
 				qsort (keys, items, low, high, comparer);
@@ -1388,10 +1387,18 @@ namespace System
 					while (high > low0 && comparer.Compare (keyPivot, keys.GetValueImpl (high)) < 0)
 						--high;
 				} else {
-					while (low < high0 && cmpPivot.CompareTo (keys.GetValueImpl (low)) > 0)
-						++low;
-					while (high > low0 && cmpPivot.CompareTo (keys.GetValueImpl (high)) < 0)
-						--high;
+					if (keyPivot == null){
+						// This has the effect of moving the null values to the front if comparer is null
+						while (high > low0 && keys.GetValueImpl (high) != null)
+							--high;
+						while (low < high0 && keys.GetValueImpl (low) == null)
+							++low;
+					} else {
+						while (low < high0 && cmpPivot.CompareTo (keys.GetValueImpl (low)) > 0)
+							++low;
+						while (high > low0 && cmpPivot.CompareTo (keys.GetValueImpl (high)) < 0)
+							--high;
+					}
 				}
 
 				if (low <= high) {
@@ -1408,27 +1415,19 @@ namespace System
 				qsort (keys, items, low, high0, comparer);
 		}
 
-		private static int MoveNullKeysToFront (Array keys, Array items, int low, int high, bool ensureComparable)
+		private static void CheckComparerAvailable (Array keys, int low, int high)
 		{
-			// find first nun-null key
-			while (low < high && keys.GetValueImpl (low) == null)
-				low++;
-
 			// move null keys to beginning of array,
 			// ensure that non-null keys implement IComparable
-			for (int i = low + 1; i <= high; i++) {
+			for (int i = 0; i < high; i++) {
 				object obj = keys.GetValueImpl (i);
-				if (obj == null) {
-					swap (keys, items, low, i);
-					low++;
-				} else {
-					if (ensureComparable && !(obj is IComparable)) {
-						string msg = Locale.GetText ("No IComparable interface found for type '{0}'.");
-						throw new InvalidOperationException (String.Format (msg, obj.GetType ()));
-					}  
-				}
+				if (obj == null)
+					continue;
+				if (!(obj is IComparable)) {
+					string msg = Locale.GetText ("No IComparable interface found for type '{0}'.");
+					throw new InvalidOperationException (String.Format (msg, obj.GetType ()));
+				}  
 			}
-			return low;
 		}
 
 		private static void swap (Array keys, Array items, int i, int j)
@@ -1598,16 +1597,14 @@ namespace System
 					comparer = Comparer<TKey>.Default;
 			}
 
-			low = MoveNullKeysToFront<TKey, TValue> (keys, items, low, high, comparer == null);
-
-			if (low == high)
-				return;
+			if (comparer == null)
+				CheckComparerAvailable<TKey> (keys, low, high);
  
-			try {
+			//try {
 				qsort (keys, items, low, high, comparer);
-			} catch (Exception e) {
-				throw new InvalidOperationException (Locale.GetText ("The comparer threw an exception."), e);
-			}
+				//} catch (Exception e) {
+				//throw new InvalidOperationException (Locale.GetText ("The comparer threw an exception."), e);
+				//}
 		}
 		
 		public static void Sort<T> (T [] array, Comparison<T> comparison)
@@ -1648,12 +1645,19 @@ namespace System
 			var keyPivot = array [mid];
 
 			while (true) {
-				// Move the walls in
-				while (low < high0 && keyPivot.CompareTo (array [low]) > 0)
-					++low;
-				while (high > low0 && keyPivot.CompareTo (array [high]) < 0)
-					--high;
-
+				if (keyPivot == null){
+					while (low < high0 && array [low] == null)
+						++low;
+					while (high > low0 && array [high] != null)
+						--high;
+				} else {
+					// Move the walls in
+					while (low < high0 && keyPivot.CompareTo (array [low]) > 0)
+						++low;
+					while (high > low0 && keyPivot.CompareTo (array [high]) < 0)
+						--high;
+				}
+				
 				if (low <= high) {
 					swap (array, items, low, high);
 					++low;
@@ -1692,10 +1696,15 @@ namespace System
 							++low;
 						while (high > low0 && genCmpPivot.CompareTo (keys [high]) < 0)
 							--high;
-					} else {
+					} else if (cmpPivot != null) {
 						while (low < high0 && cmpPivot.CompareTo (keys [low]) > 0)
 							++low;
 						while (high > low0 && cmpPivot.CompareTo (keys [high]) < 0)
+							--high;
+					} else {
+						while (low < high0 && keys [low] == null)
+							++low;
+						while (high > low0 && keys [high] != null)
 							--high;
 					}
 				}
@@ -1724,11 +1733,18 @@ namespace System
 			T keyPivot = array [mid];
 
 			while (true) {
-				// Move the walls in
-				while (low < high0 && comparison (array [low], keyPivot) < 0)
-					++low;
-				while (high > low0 && comparison (keyPivot, array [high]) < 0)
-					--high;
+				if (keyPivot == null){
+					while (low < high0 && array [low] == null)
+						++low;
+					while (high > low0 && array [high] != null)
+						--high;
+				} else {
+					// Move the walls in
+					while (low < high0 && comparison (array [low], keyPivot) < 0)
+						++low;
+					while (high > low0 && comparison (keyPivot, array [high]) < 0)
+						--high;
+				}
 
 				if (low <= high) {
 					swap<T> (array, low, high);
@@ -1744,27 +1760,19 @@ namespace System
 				qsort<T> (array, low, high0, comparison);
 		}
 
-		private static int MoveNullKeysToFront<K, V> (K [] keys, V [] items, int low, int high, bool ensureComparable)
+		private static void CheckComparerAvailable<K> (K [] keys, int low, int high)
 		{
-			// find first nun-null key
-			while (low < high && keys [low] == null)
-				low++;
-
 			// move null keys to beginning of array,
 			// ensure that non-null keys implement IComparable
-			for (int i = low + 1; i <= high; i++) {
+			for (int i = low; i < high; i++) {
 				K key = keys [i];
-				if (key == null) {
-					swap<K, V> (keys, items, low, i);
-					low++;
-				} else {
-					if (ensureComparable && !(key is IComparable<K>) && !(key is IComparable)) {
+				if (key != null) {
+					if (!(key is IComparable<K>) && !(key is IComparable)) {
 						string msg = Locale.GetText ("No IComparable<T> or IComparable interface found for type '{0}'.");
 						throw new InvalidOperationException (String.Format (msg, key.GetType ()));
 					}  
 				}
 			}
-			return low;
 		}
 
 		private static void swap<K, V> (K [] keys, V [] items, int i, int j)

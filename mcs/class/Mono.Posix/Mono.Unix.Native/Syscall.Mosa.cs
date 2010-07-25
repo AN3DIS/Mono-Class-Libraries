@@ -282,6 +282,22 @@ namespace Mono.Unix.Native
 		{
 			throw new System.NotImplementedException();
 		}
+		private static int sys_epoll_create (int size)
+		{
+			throw new System.NotImplementedException();
+		}
+		private static int sys_epoll_create1 (EpollFlags flags)
+		{
+			throw new System.NotImplementedException();
+		}
+		private static int sys_epoll_ctl (int epfd, EpollOp op, IntPtr fd, ref EpollEvent ee)
+		{
+			throw new System.NotImplementedException();
+		}
+		private static int sys_epoll_wait (int epfd, EpollEvent [] ee, int maxevents, int timeout)
+		{
+			throw new System.NotImplementedException();
+		}
 		public static int posix_madvise (IntPtr addr, ulong len,
 		PosixMadviseAdvice advice)
 		{

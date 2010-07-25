@@ -317,6 +317,18 @@ namespace Mono.Unix.Native
 		EntryPoint="Mono_Posix_Syscall_strerror_r")]
 		private static extern int sys_strerror_r (int errnum, 
 		[Out] StringBuilder buf, ulong n);
+		
+		[DllImport (LIBC, SetLastError=true, EntryPoint="epoll_create")]
+		private static extern int sys_epoll_create (int size);
+		
+		[DllImport (LIBC, SetLastError=true, EntryPoint="epoll_create1")]
+		private static extern int sys_epoll_create1 (EpollFlags flags);
+		
+		[DllImport (LIBC, SetLastError=true, EntryPoint="epoll_ctl")]
+		private static extern int sys_epoll_ctl (int epfd, EpollOp op, IntPtr fd, ref EpollEvent ee);
+		
+		[DllImport (LIBC, SetLastError=true, EntryPoint="epoll_wait")]
+		private static extern int sys_epoll_wait (int epfd, EpollEvent [] ee, int maxevents, int timeout);
 		[DllImport (MPH, SetLastError=true, 
 		EntryPoint="Mono_Posix_Syscall_posix_madvise")]
 		public static extern int posix_madvise (IntPtr addr, ulong len, 

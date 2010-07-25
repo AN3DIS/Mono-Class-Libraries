@@ -9,6 +9,7 @@
 *.cache
 *.bak
 *.swp
+*.dll
 Bin/
 bin/
 Debug/

@@ -795,7 +795,7 @@ namespace System.Linq
 		{
 			var items = new HashSet<TSource> (second, comparer);
 			foreach (var element in first) {
-				if (!items.Contains (element, comparer))
+				if (!items.Contains (element))
 					yield return element;
 			}
 		}
@@ -2963,7 +2963,7 @@ namespace System.Linq
 			}
 
 			foreach (var element in second) {
-				if (! items.Contains (element, comparer)) {
+				if (! items.Contains (element)) {
 					items.Add (element);
 					yield return element;
 				}
