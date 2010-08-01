@@ -62,6 +62,10 @@ namespace System.Threading
 		{
 			throw new System.NotImplementedException();
 		}
+		public static bool Yield ()
+		{
+			throw new System.NotImplementedException();
+		}
 		private static void Sleep_internal(int ms)
 		{
 			throw new System.NotImplementedException();

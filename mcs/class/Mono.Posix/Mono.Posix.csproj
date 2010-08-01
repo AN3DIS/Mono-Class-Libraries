@@ -5,7 +5,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{a62b3be1-d747-41fe-9ca9-ea7458bafb12}</ProjectGuid>
+    <ProjectGuid>{9604e4f1-f3df-4a1a-8071-30d8d34f6d14}</ProjectGuid>
     <OutputType>library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Mono.Posix</RootNamespace>

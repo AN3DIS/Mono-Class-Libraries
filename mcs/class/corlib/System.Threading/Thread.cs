@@ -341,6 +341,9 @@ namespace System.Threading {
 			ResetAbort_internal ();
 		}
 
+#if NET_4_0 || BOOTSTRAP_NET_4_0
+#endif
+
 		public static void Sleep (int millisecondsTimeout)
 		{
 			if (millisecondsTimeout < Timeout.Infinite)
