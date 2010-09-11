@@ -28,12 +28,13 @@
 
 #if NET_4_0
 using System;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Runtime.ConstrainedExecution;
 
 namespace Microsoft.Win32.SafeHandles {
 
-	public sealed class SafeRegistryHandle : SafeHandleZeroOrMinusOneIsInvalid, IDisposable {
+	public sealed partial class SafeRegistryHandle : SafeHandleZeroOrMinusOneIsInvalid, IDisposable {
 		public SafeRegistryHandle (IntPtr preexistingHandle, bool ownsHandle) : base (ownsHandle)
 		{
 			handle = preexistingHandle;	
@@ -41,8 +42,13 @@ namespace Microsoft.Win32.SafeHandles {
 
 		protected override bool ReleaseHandle ()
 		{
-			throw new NotImplementedException ();
+			// Need to release an unmanaged pointer *only* in Windows.
+			if (Path.DirectorySeparatorChar == '\\')
+				return RegCloseKey (handle) == 0;
+
+			return true;
 		}
+
 	}
 }
 #endif

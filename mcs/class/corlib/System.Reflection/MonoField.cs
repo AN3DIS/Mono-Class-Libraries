@@ -62,6 +62,8 @@ namespace System.Reflection {
 
 		public override Type FieldType { 
 			get {
+				if (type == null)
+					type = ResolveType ();
 				return type;
 			}
 		}
@@ -111,7 +113,7 @@ namespace System.Reflection {
 		}
 
 		public override string ToString () {
-			return String.Format ("{0} {1}", type, name);
+			return String.Format ("{0} {1}", FieldType, name);
 		}
 
 		public override void SetValue (object obj, object val, BindingFlags invokeAttr, Binder binder, CultureInfo culture)
@@ -132,9 +134,9 @@ namespace System.Reflection {
 			CheckGeneric ();
 			if (val != null) {
 				object newVal;
-				newVal = binder.ChangeType (val, type, culture);
+				newVal = binder.ChangeType (val, FieldType, culture);
 				if (newVal == null)
-					throw new ArgumentException ("Object type " + val.GetType() + " cannot be converted to target type: " + type, "val");
+					throw new ArgumentException ("Object type " + val.GetType() + " cannot be converted to target type: " + FieldType, "val");
 				val = newVal;
 			}
 			SetValueInternal (this, obj, val);

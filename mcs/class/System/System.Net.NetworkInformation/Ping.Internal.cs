@@ -35,6 +35,7 @@ using System.Globalization;
 using System.ComponentModel;
 using System.Net.Sockets;
 using System.Security.Principal;
+using System.Security.Cryptography;
 using System.Runtime.InteropServices;
 
 namespace System.Net.NetworkInformation

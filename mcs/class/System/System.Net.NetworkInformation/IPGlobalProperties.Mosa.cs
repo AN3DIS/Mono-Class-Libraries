@@ -64,7 +64,7 @@ namespace System.Net.NetworkInformation
 		{
 			throw new System.NotImplementedException();
 		}
-		static int GetIPStatisticsEx (out Win32_MIB_IPSTATS pStats, int dwFamily)
+		static int GetIpStatisticsEx (out Win32_MIB_IPSTATS pStats, int dwFamily)
 		{
 			throw new System.NotImplementedException();
 		}

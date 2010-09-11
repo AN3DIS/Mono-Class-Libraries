@@ -45,6 +45,9 @@ namespace System.Reflection
 	{
 		
 		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		extern Type ResolveType ();
+		
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
 		private extern Type GetParentType (bool declaring);
 		
 		[MethodImplAttribute(MethodImplOptions.InternalCall)]

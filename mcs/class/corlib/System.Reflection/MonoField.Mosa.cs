@@ -19,6 +19,10 @@ namespace System.Reflection
 {
 	 partial class MonoField
 	{
+		Type ResolveType ()
+		{
+			throw new System.NotImplementedException();
+		}
 		private Type GetParentType (bool declaring)
 		{
 			throw new System.NotImplementedException();

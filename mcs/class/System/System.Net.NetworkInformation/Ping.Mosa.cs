@@ -9,6 +9,7 @@
  */
 
 #if NET_2_0
+
 using System;
 using System.IO;
 using System.Text;
@@ -17,6 +18,7 @@ using System.Globalization;
 using System.ComponentModel;
 using System.Net.Sockets;
 using System.Security.Principal;
+using System.Security.Cryptography;
 using System.Runtime.InteropServices;
 
 namespace System.Net.NetworkInformation
@@ -30,4 +32,5 @@ namespace System.Net.NetworkInformation
 
 	}
 }
+
 #endif

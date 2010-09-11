@@ -5,7 +5,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{90e7e3b4-cf66-4022-8142-4074d36ccd48}</ProjectGuid>
+    <ProjectGuid>{c3870612-93bd-464f-8ba8-656ff2f0d432}</ProjectGuid>
     <OutputType>library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>System.Core</RootNamespace>
@@ -122,6 +122,9 @@
     <Compile Include="System.Threading\LockRecursionException.cs" />
     <Compile Include="System.Threading\LockRecursionPolicy.cs" />
     <Compile Include="System.Threading\ReaderWriterLockSlim.cs" />
+    <Compile Include="..\corlib\System.Threading\AtomicBoolean.cs" />
+    <Compile Include="System.Threading\ThreadLockState.cs" />
+    <Compile Include="System.Threading\ReaderWriterLockSlimExtensions.cs" />
     <Compile Include="Microsoft.Win32.SafeHandles\SafePipeHandle.cs" />
     <Compile Include="System.IO.Pipes\AnonymousPipeClientStream.cs" />
     <Compile Include="System.IO.Pipes\AnonymousPipeServerStream.cs" />

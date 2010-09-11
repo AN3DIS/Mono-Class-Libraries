@@ -474,7 +474,7 @@ namespace System.Net.NetworkInformation {
 			if (!Socket.SupportsIPv4)
 				throw new NetworkInformationException ();
 			Win32_MIB_IPSTATS stats;
-			GetIPStatisticsEx (out stats, AF_INET);
+			GetIpStatisticsEx (out stats, AF_INET);
 			return new Win32IPGlobalStatistics (stats);
 		}
 
@@ -483,7 +483,7 @@ namespace System.Net.NetworkInformation {
 			if (!Socket.OSSupportsIPv6)
 				throw new NetworkInformationException ();
 			Win32_MIB_IPSTATS stats;
-			GetIPStatisticsEx (out stats, AF_INET6);
+			GetIpStatisticsEx (out stats, AF_INET6);
 			return new Win32IPGlobalStatistics (stats);
 		}
 

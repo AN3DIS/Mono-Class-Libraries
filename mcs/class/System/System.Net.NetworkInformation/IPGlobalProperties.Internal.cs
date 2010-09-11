@@ -74,7 +74,7 @@ namespace System.Net.NetworkInformation
 		static extern int GetIcmpStatisticsEx (out Win32_MIB_ICMP_EX pStats, int dwFamily);
 		
 		[DllImport ("Iphlpapi.dll")]
-		static extern int GetIPStatisticsEx (out Win32_MIB_IPSTATS pStats, int dwFamily);
+		static extern int GetIpStatisticsEx (out Win32_MIB_IPSTATS pStats, int dwFamily);
 
 	}
 }
