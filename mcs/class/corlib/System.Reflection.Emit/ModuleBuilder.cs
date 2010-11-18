@@ -595,6 +595,8 @@ namespace System.Reflection.Emit {
 		{
 			if (con == null)
 				throw new ArgumentNullException ("con");
+			if (con.DeclaringType.Module != this)
+				throw new InvalidOperationException ("The constructor is not in this module");
 			return new MethodToken (GetToken (con));
 		}
 
@@ -655,7 +657,11 @@ namespace System.Reflection.Emit {
 		}
 
 		internal int GetToken (MemberInfo member) {
-			return getToken (this, member);
+			return getToken (this, member, true);
+		}
+
+		internal int GetToken (MemberInfo member, bool create_open_instance) {
+			return getToken (this, member, create_open_instance);
 		}
 
 		internal int GetToken (MethodInfo method, Type[] opt_param_types) {
@@ -663,7 +669,7 @@ namespace System.Reflection.Emit {
 		}
 
 		internal int GetToken (SignatureHelper helper) {
-			return getToken (this, helper);
+			return getToken (this, helper, true);
 		}
 
 		internal TokenGenerator GetTokenGenerator () {
@@ -899,8 +905,8 @@ namespace System.Reflection.Emit {
 			return mb.GetToken (str);
 		}
 
-		public int GetToken (MemberInfo member) {
-			return mb.GetToken (member);
+		public int GetToken (MemberInfo member, bool create_open_instance) {
+			return mb.GetToken (member, create_open_instance);
 		}
 
 		public int GetToken (MethodInfo method, Type[] opt_param_types) {

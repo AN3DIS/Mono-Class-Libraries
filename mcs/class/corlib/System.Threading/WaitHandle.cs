@@ -210,10 +210,12 @@ namespace System.Threading
 
 #if NET_4_0
 		public void Dispose ()
+#else		
+		void IDisposable.Dispose ()
+#endif
 		{
 			Close ();
 		}
-#endif
 
 		public const int WaitTimeout = 258;
 
@@ -391,12 +393,6 @@ namespace System.Threading
 		protected static readonly IntPtr InvalidHandle = (IntPtr) (-1);
 		bool disposed = false;
 
-		void IDisposable.Dispose() {
-			Dispose(true);
-			// Take yourself off the Finalization queue
-			GC.SuppressFinalize(this);
-		}
-		
 		~WaitHandle() {
 			Dispose(false);
 		}

@@ -88,6 +88,12 @@ namespace Mono.Unix {
 
 		[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
 		delegate int Mono_Posix_RuntimeIsShuttingDown ();
+		static Mono_Posix_RuntimeIsShuttingDown ShuttingDown = RuntimeShuttingDownCallback;
+		
+		static int RuntimeShuttingDownCallback ()
+		{
+			return Environment.HasShutdownStarted ? 1 : 0;
+		}
 
 		private void AssertValid ()
 		{
@@ -182,7 +188,7 @@ namespace Mono.Unix {
 				if (infos [i] == IntPtr.Zero)
 					throw new InvalidOperationException ("Disposed UnixSignal");
 			}
-			return WaitAny (infos, infos.Length, millisecondsTimeout, () => Environment.HasShutdownStarted ? 1 : 0);
+			return WaitAny (infos, infos.Length, millisecondsTimeout, ShuttingDown);
 		}
 	}
 }

@@ -26,6 +26,18 @@ namespace Mono.Unix.Native
 		[DllImport (LIB, EntryPoint="Mono_Posix_ToDirectoryNotifyFlags")]
 		private static extern int ToDirectoryNotifyFlags (Int32 value, out DirectoryNotifyFlags rval);
 		
+		[DllImport (LIB, EntryPoint="Mono_Posix_FromEpollEvents")]
+		private static extern int FromEpollEvents (EpollEvents value, out UInt32 rval);
+		
+		[DllImport (LIB, EntryPoint="Mono_Posix_ToEpollEvents")]
+		private static extern int ToEpollEvents (UInt32 value, out EpollEvents rval);
+		
+		[DllImport (LIB, EntryPoint="Mono_Posix_FromEpollFlags")]
+		private static extern int FromEpollFlags (EpollFlags value, out Int32 rval);
+		
+		[DllImport (LIB, EntryPoint="Mono_Posix_ToEpollFlags")]
+		private static extern int ToEpollFlags (Int32 value, out EpollFlags rval);
+		
 		[DllImport (LIB, EntryPoint="Mono_Posix_FromErrno")]
 		private static extern int FromErrno (Errno value, out Int32 rval);
 		

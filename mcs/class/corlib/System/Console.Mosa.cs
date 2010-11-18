@@ -31,6 +31,10 @@ namespace System
 			{
 				throw new System.NotImplementedException();
 			}
+			private static bool SetConsoleCtrlHandler (WindowsCancelHandler handler, bool addHandler)
+			{
+				throw new System.NotImplementedException();
+			}
 
 		}
 	}

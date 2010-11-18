@@ -52,9 +52,7 @@ namespace System.Net.Sockets
 		{
 			throw new System.NotImplementedException();
 		}
-		private static void Disconnect_internal(IntPtr sock,
-		bool reuse,
-		out int error)
+		static void Disconnect_internal(IntPtr sock, bool reuse, out int error)
 		{
 			throw new System.NotImplementedException();
 		}
@@ -69,15 +67,7 @@ namespace System.Net.Sockets
 		{
 			throw new System.NotImplementedException();
 		}
-		private static void Listen_internal(IntPtr sock, int backlog,
-		out int error)
-		{
-			throw new System.NotImplementedException();
-		}
-		private static int Receive_internal (IntPtr sock,
-		WSABUF[] bufarray,
-		SocketFlags flags,
-		out int error)
+		private static void Listen_internal(IntPtr sock, int backlog, out int error)
 		{
 			throw new System.NotImplementedException();
 		}
@@ -87,13 +77,6 @@ namespace System.Net.Sockets
 		int count,
 		SocketFlags flags,
 		ref SocketAddress sockaddr,
-		out int error)
-		{
-			throw new System.NotImplementedException();
-		}
-		private static int Send_internal (IntPtr sock,
-		WSABUF[] bufarray,
-		SocketFlags flags,
 		out int error)
 		{
 			throw new System.NotImplementedException();

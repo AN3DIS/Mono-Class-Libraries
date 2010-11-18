@@ -26,6 +26,10 @@ namespace System.Reflection
 		{
 			throw new System.NotImplementedException();
 		}
+		static int get_method_attributes (IntPtr handle)
+		{
+			throw new System.NotImplementedException();
+		}
 		static ParameterInfo[] get_parameter_info (IntPtr handle, MemberInfo member)
 		{
 			throw new System.NotImplementedException();

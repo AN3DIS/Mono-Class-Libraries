@@ -40,6 +40,22 @@ namespace Mono.Unix.Native
 		{
 			throw new System.NotImplementedException();
 		}
+		private static int FromEpollEvents (EpollEvents value, out UInt32 rval)
+		{
+			throw new System.NotImplementedException();
+		}
+		private static int ToEpollEvents (UInt32 value, out EpollEvents rval)
+		{
+			throw new System.NotImplementedException();
+		}
+		private static int FromEpollFlags (EpollFlags value, out Int32 rval)
+		{
+			throw new System.NotImplementedException();
+		}
+		private static int ToEpollFlags (Int32 value, out EpollFlags rval)
+		{
+			throw new System.NotImplementedException();
+		}
 		private static int FromErrno (Errno value, out Int32 rval)
 		{
 			throw new System.NotImplementedException();

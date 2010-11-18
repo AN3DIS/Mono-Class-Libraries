@@ -53,7 +53,7 @@ namespace System
 		// memory usage from 16 to 8 bytes, see bug: 592221.   This also fixes the
 		// 622127 issue and simplifies the code in reflection.c to encode DateTimes
 		//
-		public long encoded;
+		long encoded;
 		const long TicksMask = 0x3fffffffffffffff;
 		const long KindMask = unchecked ((long) 0xc000000000000000);
 		const int KindShift = 62;
@@ -650,7 +650,7 @@ namespace System
 
 		public static DateTime FromBinary (long dateData)
 		{
-			switch ((ulong)dateData >> 62) {
+			switch ((ulong)dateData >> KindShift) {
 			case 1: // Utc
 				return new DateTime (dateData & TicksMask, DateTimeKind.Utc);
 			case 0: // Unspecified

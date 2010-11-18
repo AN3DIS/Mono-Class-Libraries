@@ -1280,7 +1280,7 @@ namespace System
 				throw new ArgumentOutOfRangeException ("length", Locale.GetText (
 					"Value has to be >= 0."));
 
-			if (keys.Length != items.Length || keys.Length - (index + keys.GetLowerBound (0)) < length)
+			if (items.Length - (index + items.GetLowerBound (0)) < length || keys.Length - (index + keys.GetLowerBound (0)) < length)
 				throw new ArgumentException ();
 
 			SortImpl (keys, items, index, length, comparer);
@@ -1529,7 +1529,7 @@ namespace System
 			if (length < 0)
 				throw new ArgumentOutOfRangeException ("length");
 
-			if (keys.Length != items.Length || keys.Length - index < length)
+			if (items.Length - index < length || keys.Length - index < length)
 				throw new ArgumentException ();
 
 			SortImpl<TKey, TValue> (keys, items, index, length, comparer);

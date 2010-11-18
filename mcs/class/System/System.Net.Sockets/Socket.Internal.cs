@@ -58,7 +58,6 @@ namespace System.Net.Sockets
 		private extern static void Select_internal (ref Socket [] sockets,
 		int microSeconds,
 		out int error);
-#endif
 		
 #if !TARGET_JVM
 		[MethodImplAttribute(MethodImplOptions.InternalCall)]
@@ -68,7 +67,6 @@ namespace System.Net.Sockets
 		[MethodImplAttribute(MethodImplOptions.InternalCall)]
 		private extern static SocketAddress LocalEndPoint_internal(IntPtr socket, out int error);
 #endif
-		
 		[MethodImplAttribute(MethodImplOptions.InternalCall)]
 		private extern static IntPtr Accept_internal(IntPtr sock, out int error, bool blocking);
 		
@@ -77,10 +75,10 @@ namespace System.Net.Sockets
 		SocketAddress sa,
 		out int error);
 #endif
+		
 		[MethodImplAttribute(MethodImplOptions.InternalCall)]
-		private extern static void Disconnect_internal(IntPtr sock,
-		bool reuse,
-		out int error);
+		extern static void Disconnect_internal(IntPtr sock, bool reuse, out int error);
+#endif
 		
 		[MethodImplAttribute(MethodImplOptions.InternalCall)]
 		private extern static void GetSocketOption_arr_internal(IntPtr socket,
@@ -90,17 +88,9 @@ namespace System.Net.Sockets
 		[MethodImplAttribute(MethodImplOptions.InternalCall)]
 		extern static int WSAIoctl (IntPtr sock, int ioctl_code, byte [] input,
 		byte [] output, out int error);
-#endif
 		
 		[MethodImplAttribute(MethodImplOptions.InternalCall)]
-		private extern static void Listen_internal(IntPtr sock, int backlog,
-		out int error);
-		
-		[MethodImplAttribute (MethodImplOptions.InternalCall)]
-		private extern static int Receive_internal (IntPtr sock,
-		WSABUF[] bufarray,
-		SocketFlags flags,
-		out int error);
+		private extern static void Listen_internal(IntPtr sock, int backlog, out int error);
 		
 		[MethodImplAttribute(MethodImplOptions.InternalCall)]
 		private extern static int RecvFrom_internal(IntPtr sock,
@@ -109,12 +99,6 @@ namespace System.Net.Sockets
 		int count,
 		SocketFlags flags,
 		ref SocketAddress sockaddr,
-		out int error);
-		
-		[MethodImplAttribute (MethodImplOptions.InternalCall)]
-		private extern static int Send_internal (IntPtr sock,
-		WSABUF[] bufarray,
-		SocketFlags flags,
 		out int error);
 		
 		[MethodImplAttribute(MethodImplOptions.InternalCall)]

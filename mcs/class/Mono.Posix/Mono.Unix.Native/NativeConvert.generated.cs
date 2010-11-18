@@ -100,6 +100,58 @@ namespace Mono.Unix.Native {
 			return rval;
 		}
 
+		public static bool TryFromEpollEvents (EpollEvents value, out UInt32 rval)
+		{
+			return FromEpollEvents (value, out rval) == 0;
+		}
+
+		public static UInt32 FromEpollEvents (EpollEvents value)
+		{
+			UInt32 rval;
+			if (FromEpollEvents (value, out rval) == -1)
+				ThrowArgumentException (value);
+			return rval;
+		}
+
+		public static bool TryToEpollEvents (UInt32 value, out EpollEvents rval)
+		{
+			return ToEpollEvents (value, out rval) == 0;
+		}
+
+		public static EpollEvents ToEpollEvents (UInt32 value)
+		{
+			EpollEvents rval;
+			if (ToEpollEvents (value, out rval) == -1)
+				ThrowArgumentException (value);
+			return rval;
+		}
+
+		public static bool TryFromEpollFlags (EpollFlags value, out Int32 rval)
+		{
+			return FromEpollFlags (value, out rval) == 0;
+		}
+
+		public static Int32 FromEpollFlags (EpollFlags value)
+		{
+			Int32 rval;
+			if (FromEpollFlags (value, out rval) == -1)
+				ThrowArgumentException (value);
+			return rval;
+		}
+
+		public static bool TryToEpollFlags (Int32 value, out EpollFlags rval)
+		{
+			return ToEpollFlags (value, out rval) == 0;
+		}
+
+		public static EpollFlags ToEpollFlags (Int32 value)
+		{
+			EpollFlags rval;
+			if (ToEpollFlags (value, out rval) == -1)
+				ThrowArgumentException (value);
+			return rval;
+		}
+
 		public static bool TryFromErrno (Errno value, out Int32 rval)
 		{
 			return FromErrno (value, out rval) == 0;

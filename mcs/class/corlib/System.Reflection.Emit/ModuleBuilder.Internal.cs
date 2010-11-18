@@ -60,7 +60,7 @@ namespace System.Reflection.Emit
 		private static extern int getUSIndex (ModuleBuilder mb, string str);
 		
 		[MethodImplAttribute(MethodImplOptions.InternalCall)]
-		private static extern int getToken (ModuleBuilder mb, object obj);
+		private static extern int getToken (ModuleBuilder mb, object obj, bool create_open_instance);
 		
 		[MethodImplAttribute(MethodImplOptions.InternalCall)]
 		private static extern int getMethodToken (ModuleBuilder mb, MethodInfo method,

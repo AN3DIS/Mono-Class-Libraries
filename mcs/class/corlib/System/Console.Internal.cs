@@ -44,10 +44,14 @@ namespace System
 
 		private partial class WindowsConsole
 		{
+			
 			[DllImport ("kernel32.dll", CharSet=CharSet.Auto, ExactSpelling=true)]
 			private static extern int GetConsoleCP ();
 			[DllImport ("kernel32.dll", CharSet=CharSet.Auto, ExactSpelling=true)]
 			private static extern int GetConsoleOutputCP ();
+			
+			[DllImport ("kernel32.dll", CharSet=CharSet.Auto, ExactSpelling=true)]
+			private static extern bool SetConsoleCtrlHandler (WindowsCancelHandler handler, bool addHandler);
 
 		}
 	}

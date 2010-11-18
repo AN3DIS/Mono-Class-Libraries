@@ -117,6 +117,7 @@ namespace System {
 			// now we deal with multiple flags...
 
 			StringBuilder sb = new StringBuilder ();
+
 			if ((components & UriComponents.Scheme) != 0) {
 				sb.Append (scheme);
 				sb.Append (Uri.GetSchemeDelimiter (scheme));
@@ -141,8 +142,12 @@ namespace System {
 					sb.Append (am.Groups [4].Value);
 			}
 
-			if ((components & UriComponents.Path) != 0)
+			if ((components & UriComponents.Path) != 0) {
+				if ((components & UriComponents.PathAndQuery) != 0 &&
+					(m.Groups [5].Value == null || !m.Groups [5].Value.StartsWith ("/")))
+					sb.Append ("/");
 				sb.Append (m.Groups [5]);
+			}
 
 			if ((components & UriComponents.Query) != 0)
 				sb.Append (m.Groups [6]);
@@ -233,7 +238,7 @@ namespace System {
 
 			switch (format) {
 			case UriFormat.UriEscaped:
-				return Uri.EscapeString (s, false, true, true);
+				return Uri.EscapeString (s, Uri.EscapeCommonHexBrackets);
 			case UriFormat.SafeUnescaped:
 				// TODO subset of escape rules
 				s = Uri.Unescape (s, false);
@@ -259,11 +264,9 @@ namespace System {
 			InternalRegister (newtable, new DefaultUriParser (), Uri.UriSchemeHttp, 80);
 			InternalRegister (newtable, new DefaultUriParser (), Uri.UriSchemeHttps, 443);
 			InternalRegister (newtable, new DefaultUriParser (), Uri.UriSchemeMailto, 25);
-#if NET_2_0
 			InternalRegister (newtable, new DefaultUriParser (), Uri.UriSchemeNetPipe, -1);
 			InternalRegister (newtable, new DefaultUriParser (), Uri.UriSchemeNetTcp, -1);
-#endif
-			InternalRegister (newtable, new DefaultUriParser (), Uri.UriSchemeNews, 119);
+			InternalRegister (newtable, new DefaultUriParser (), Uri.UriSchemeNews, -1);
 			InternalRegister (newtable, new DefaultUriParser (), Uri.UriSchemeNntp, 119);
 			// not defined in Uri.UriScheme* but a parser class exists
 			InternalRegister (newtable, new DefaultUriParser (), "ldap", 389);

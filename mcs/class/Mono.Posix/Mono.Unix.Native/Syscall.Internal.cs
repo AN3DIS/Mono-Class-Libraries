@@ -325,7 +325,7 @@ namespace Mono.Unix.Native
 		private static extern int sys_epoll_create1 (EpollFlags flags);
 		
 		[DllImport (LIBC, SetLastError=true, EntryPoint="epoll_ctl")]
-		private static extern int sys_epoll_ctl (int epfd, EpollOp op, IntPtr fd, ref EpollEvent ee);
+		private static extern int sys_epoll_ctl (int epfd, EpollOp op, int fd, ref EpollEvent ee);
 		
 		[DllImport (LIBC, SetLastError=true, EntryPoint="epoll_wait")]
 		private static extern int sys_epoll_wait (int epfd, EpollEvent [] ee, int maxevents, int timeout);

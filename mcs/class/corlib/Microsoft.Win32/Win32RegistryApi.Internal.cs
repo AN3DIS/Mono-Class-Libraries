@@ -98,6 +98,11 @@ namespace Microsoft.Win32
 		string valueName, IntPtr reserved, RegistryValueKind type,
 		ref int data, int rawDataLength);
 		
+		[DllImport ("advapi32.dll", CharSet=CharSet.Unicode, EntryPoint="RegSetValueEx")]
+		private static extern int RegSetValueEx (IntPtr keyBase, 
+		string valueName, IntPtr reserved, RegistryValueKind type,
+		ref long data, int rawDataLength);
+		
 		[DllImport ("advapi32.dll", CharSet=CharSet.Unicode, EntryPoint="RegQueryValueEx")]
 		private static extern int RegQueryValueEx (IntPtr keyBase,
 		string valueName, IntPtr reserved, ref RegistryValueKind type,
@@ -112,6 +117,11 @@ namespace Microsoft.Win32
 		private static extern int RegQueryValueEx (IntPtr keyBase,
 		string valueName, IntPtr reserved, ref RegistryValueKind type,
 		ref int data, ref int dataSize);
+		
+		[DllImport ("advapi32.dll", CharSet=CharSet.Unicode, EntryPoint="RegQueryValueEx")]
+		private static extern int RegQueryValueEx (IntPtr keyBase,
+		string valueName, IntPtr reserved, ref RegistryValueKind type,
+		ref long data, ref int dataSize);
 
 	}
 }

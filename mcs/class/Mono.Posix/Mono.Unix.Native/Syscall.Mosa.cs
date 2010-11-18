@@ -290,7 +290,7 @@ namespace Mono.Unix.Native
 		{
 			throw new System.NotImplementedException();
 		}
-		private static int sys_epoll_ctl (int epfd, EpollOp op, IntPtr fd, ref EpollEvent ee)
+		private static int sys_epoll_ctl (int epfd, EpollOp op, int fd, ref EpollEvent ee)
 		{
 			throw new System.NotImplementedException();
 		}

@@ -9,6 +9,7 @@
  */
 
 #if NET_2_0
+
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -26,4 +27,5 @@ namespace System.Net.NetworkInformation
 
 	}
 }
+
 #endif

@@ -36,6 +36,7 @@
 using System;
 using System.Net;
 using System.Collections;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -45,13 +46,7 @@ using System.Text;
 
 #if !NET_2_1
 using System.Net.Configuration;
-#endif
-
-#if NET_2_0
-using System.Collections.Generic;
-#if !NET_2_1
 using System.Net.NetworkInformation;
-#endif
 #endif
 
 namespace System.Net.Sockets
@@ -71,19 +66,17 @@ namespace System.Net.Sockets
 		private extern static void Blocking_internal(IntPtr socket,
 		bool block,
 		out int error);
-#endif
+		
 		[MethodImplAttribute(MethodImplOptions.InternalCall)]
 		private extern static SocketAddress RemoteEndPoint_internal(IntPtr socket, out int error);
 		
 		[MethodImplAttribute(MethodImplOptions.InternalCall)]
 		private extern static void Close_internal(IntPtr socket, out int error);
-#endif
 		
 		[MethodImplAttribute(MethodImplOptions.InternalCall)]
 		private extern static void Connect_internal(IntPtr sock,
 		SocketAddress sa,
 		out int error);
-#endif
 		
 		[MethodImplAttribute(MethodImplOptions.InternalCall)]
 		extern static bool Poll_internal (IntPtr socket, SelectMode mode, int timeout, out int error);
@@ -116,6 +109,15 @@ namespace System.Net.Sockets
 		SocketOptionName name, object obj_val,
 		byte [] byte_val, int int_val,
 		out int error);
+#endif
+		[MethodImplAttribute (MethodImplOptions.InternalCall)]
+		private extern static int Receive_internal (IntPtr sock, WSABUF[] bufarray, SocketFlags flags, out int error);
+		
+		[MethodImplAttribute (MethodImplOptions.InternalCall)]
+		private extern static int Send_internal (IntPtr sock, WSABUF[] bufarray, SocketFlags flags, out int error);
+		
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		static extern void socket_pool_queue (SocketAsyncCall d, SocketAsyncResult r);
 
 	}
 }

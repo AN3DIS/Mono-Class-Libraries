@@ -48,6 +48,9 @@ namespace System.Reflection
 		static extern void get_method_info (IntPtr handle, out MonoMethodInfo info);
 		
 		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		static extern int get_method_attributes (IntPtr handle);
+		
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
 		static extern ParameterInfo[] get_parameter_info (IntPtr handle, MemberInfo member);
 		
 		[MethodImplAttribute(MethodImplOptions.InternalCall)]

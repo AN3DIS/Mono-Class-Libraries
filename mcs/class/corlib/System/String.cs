@@ -983,6 +983,10 @@ namespace System
 		{
 			if (value == null)
 				throw new ArgumentNullException ("value");
+			if (this.Length == 0)
+				return value == String.Empty ? 0 : -1;
+			if (value.Length == 0)
+				return Math.Min (this.Length - 1, startIndex);
 			if (startIndex < 0 || startIndex > length)
 				throw new ArgumentOutOfRangeException ("startIndex");
 			if (count < 0 || (startIndex < count - 1))
@@ -1183,6 +1187,8 @@ namespace System
 		{
 			if (anyOf == null)
 				throw new ArgumentNullException ();
+			if (this.length == 0)
+				return -1;
 
 			return LastIndexOfAnyUnchecked (anyOf, this.length - 1, this.length);
 		}
@@ -1191,6 +1197,8 @@ namespace System
 		{
 			if (anyOf == null)
 				throw new ArgumentNullException ();
+			if (this.length == 0)
+				return -1;
 
 			if (startIndex < 0 || startIndex >= this.length)
 				throw new ArgumentOutOfRangeException ("startIndex", "Cannot be negative, and should be less than length of string.");
@@ -1205,6 +1213,8 @@ namespace System
 		{
 			if (anyOf == null) 
 				throw new ArgumentNullException ();
+			if (this.length == 0)
+				return -1;
 
 			if ((startIndex < 0) || (startIndex >= this.Length))
 				throw new ArgumentOutOfRangeException ("startIndex", "< 0 || > this.Length");
@@ -1259,9 +1269,9 @@ namespace System
 
 		public int LastIndexOf (char value, int startIndex, int count)
 		{
-			if (startIndex == 0 && this.length == 0)
+			if (this.length == 0)
 				return -1;
-
+ 
 			// >= for char (> for string)
 			if ((startIndex < 0) || (startIndex >= this.Length))
 				throw new ArgumentOutOfRangeException ("startIndex", "< 0 || >= this.Length");
@@ -1331,11 +1341,7 @@ namespace System
 		// Following methods are culture-sensitive
 		public int LastIndexOf (String value)
 		{
-			if (this.length == 0)
-				// This overload does additional checking
-				return LastIndexOf (value, 0, 0);
-			else
-				return LastIndexOf (value, this.length - 1, this.length);
+			return LastIndexOf (value, this.length - 1, this.length);
 		}
 
 		public int LastIndexOf (String value, int startIndex)
@@ -1351,6 +1357,8 @@ namespace System
 			if (value == null)
 				throw new ArgumentNullException ("value");
 
+			if (this.length == 0)
+				return value == String.Empty ? 0 : -1;
 			// -1 > startIndex > for string (0 > startIndex >= for char)
 			if ((startIndex < -1) || (startIndex > this.Length))
 				throw new ArgumentOutOfRangeException ("startIndex", "< 0 || > this.Length");
@@ -1360,7 +1368,7 @@ namespace System
 				throw new ArgumentOutOfRangeException ("startIndex - count + 1 < 0");
 
 			if (value.Length == 0)
-				return startIndex;
+				return Math.Min (this.Length - 1, startIndex);
 
 			if (startIndex == 0 && this.length == 0)
 				return -1;
@@ -2207,7 +2215,7 @@ namespace System
 			return InternalIsInterned (str);
 		}
 	
-		public static string Join (string separator, string [] value)
+		public static string Join (string separator, params string [] value)
 		{
 			if (value == null)
 				throw new ArgumentNullException ("value");

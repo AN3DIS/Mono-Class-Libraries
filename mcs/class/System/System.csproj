@@ -5,7 +5,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{9854e560-006f-4547-9216-b01ac66e295e}</ProjectGuid>
+    <ProjectGuid>{337367cf-4bdc-4c11-a22f-e44c3290a1a7}</ProjectGuid>
     <OutputType>library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>System</RootNamespace>
@@ -278,6 +278,8 @@
     <Compile Include="System.ComponentModel.Design\DesignerVerb.cs" />
     <Compile Include="System.ComponentModel.Design\DesigntimeLicenseContext.cs" />
     <Compile Include="System.ComponentModel.Design\DesigntimeLicenseContextSerializer.cs" />
+    <Compile Include="System.ComponentModel.Design\IDesignerHostTransactionState.cs" />
+    <Compile Include="System.ComponentModel.Design\TypeDescriptionProviderService.cs" />
     <Compile Include="System.ComponentModel\DesignerAttribute.cs" />
     <Compile Include="System.ComponentModel\DesignerCategoryAttribute.cs" />
     <Compile Include="System.ComponentModel\DesignerSerializationVisibilityAttribute.cs" />
@@ -318,6 +320,7 @@
     <Compile Include="System.ComponentModel.Design.Serialization\DesignerLoader.cs" />
     <Compile Include="System.ComponentModel.Design.Serialization\DesignerSerializerAttribute.cs" />
     <Compile Include="System.ComponentModel.Design.Serialization\IDesignerLoaderHost.cs" />
+    <Compile Include="System.ComponentModel.Design.Serialization\IDesignerLoaderHost2.cs" />
     <Compile Include="System.ComponentModel.Design.Serialization\IDesignerLoaderService.cs" />
     <Compile Include="System.ComponentModel.Design.Serialization\IDesignerSerializationManager.cs" />
     <Compile Include="System.ComponentModel.Design.Serialization\IDesignerSerializationProvider.cs" />
@@ -714,6 +717,7 @@
     <Compile Include="System.Net\CookieContainer.cs" />
     <Compile Include="System.Net\Cookie.cs" />
     <Compile Include="System.Net\CookieException.cs" />
+    <Compile Include="System.Net\CookieParser.cs" />
     <Compile Include="System.Net\CredentialCache.cs" />
     <Compile Include="System.Net\DecompressionMethods.cs" />
     <Compile Include="System.Net\DefaultCertificatePolicy.cs" />
@@ -926,6 +930,16 @@
     <Compile Include="System.Security.Authentication\SslProtocols.cs" />
     <Compile Include="System.Security.Authentication\InvalidCredentialException.cs" />
     <Compile Include="System.Security.Authentication.ExtendedProtection\ChannelBinding.cs" />
+    <Compile Include="System.Security.Authentication.ExtendedProtection\ChannelBindingKind.cs" />
+    <Compile Include="System.Security.Authentication.ExtendedProtection\ExtendedProtectionPolicy.cs" />
+    <Compile Include="System.Security.Authentication.ExtendedProtection\ExtendedProtectionPolicyTypeConverter.cs" />
+    <Compile Include="System.Security.Authentication.ExtendedProtection\PolicyEnforcement.cs" />
+    <Compile Include="System.Security.Authentication.ExtendedProtection\ProtectionScenario.cs" />
+    <Compile Include="System.Security.Authentication.ExtendedProtection\ServiceNameCollection.cs" />
+    <Compile Include="System.Security.Authentication.ExtendedProtection.Configuration\ConfigUtil.cs" />
+    <Compile Include="System.Security.Authentication.ExtendedProtection.Configuration\ExtendedProtectionPolicyElement.cs" />
+    <Compile Include="System.Security.Authentication.ExtendedProtection.Configuration\ServiceNameElement.cs" />
+    <Compile Include="System.Security.Authentication.ExtendedProtection.Configuration\ServiceNameElementCollection.cs" />
     <Compile Include="System.Security.Cryptography\AsnEncodedDataCollection.cs" />
     <Compile Include="System.Security.Cryptography\AsnEncodedData.cs" />
     <Compile Include="System.Security.Cryptography\AsnEncodedDataEnumerator.cs" />

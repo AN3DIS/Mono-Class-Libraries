@@ -1827,6 +1827,11 @@ namespace System.Reflection.Emit
 			if (constructor == null)
 				throw new NullReferenceException (); //MS raises this instead of an ArgumentNullException
 
+			if (!constructor.DeclaringType.IsGenericTypeDefinition)
+				throw new ArgumentException ("constructor declaring type is not a generic type definition", "constructor");
+			if (constructor.DeclaringType != type.GetGenericTypeDefinition ())
+				throw new ArgumentException ("constructor declaring type is not the generic type definition of type", "constructor");
+
 			ConstructorInfo res = type.GetConstructor (constructor);
 			if (res == null)
 				throw new ArgumentException ("constructor not found");
@@ -1890,12 +1895,29 @@ namespace System.Reflection.Emit
 			if (field is FieldOnTypeBuilderInst)
 				throw new ArgumentException ("The specified field must be declared on a generic type definition.", "field");
 
+			if (field.DeclaringType != type.GetGenericTypeDefinition ())
+				throw new ArgumentException ("field declaring type is not the generic type definition of type", "method");
+
 			FieldInfo res = type.GetField (field);
 			if (res == null)
 				throw new System.Exception ("field not found");
 			else
 				return res;
 		}
+
+		internal TypeCode GetTypeCodeInternal () {
+			if (parent == pmodule.assemblyb.corlib_enum_type) {
+				for (int i = 0; i < num_fields; ++i) {
+					FieldBuilder f = fields [i];
+					if (!f.IsStatic)
+						return Type.GetTypeCode (f.FieldType);
+				}
+				throw new InvalidOperationException ("Enum basetype field not defined");
+			} else {
+				return Type.GetTypeCodeInternal (this);
+			}
+		}
+
 
 		void _TypeBuilder.GetIDsOfNames([In] ref Guid riid, IntPtr rgszNames, uint cNames, uint lcid, IntPtr rgDispId)
 		{

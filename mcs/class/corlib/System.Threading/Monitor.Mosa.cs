@@ -45,6 +45,10 @@ namespace System.Threading
 		{
 			throw new System.NotImplementedException();
 		}
+		static void try_enter_with_atomic_var (object obj, int millisecondsTimeout, ref bool lockTaken)
+		{
+			throw new System.NotImplementedException();
+		}
 
 	}
 }

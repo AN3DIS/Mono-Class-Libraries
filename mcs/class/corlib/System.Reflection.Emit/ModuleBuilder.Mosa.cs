@@ -39,7 +39,7 @@ namespace System.Reflection.Emit
 		{
 			throw new System.NotImplementedException();
 		}
-		private static int getToken (ModuleBuilder mb, object obj)
+		private static int getToken (ModuleBuilder mb, object obj, bool create_open_instance)
 		{
 			throw new System.NotImplementedException();
 		}

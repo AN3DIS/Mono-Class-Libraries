@@ -57,6 +57,7 @@ namespace Microsoft.Win32
 
 		// FIXME must be a way to determin this dynamically?
 		const int Int32ByteSize = 4;
+		const int Int64ByteSize = 8;
 
 		// FIXME this is hard coded on Mono, can it be determined dynamically? 
 		readonly int NativeBytesPerCharacter = Marshal.SystemDefaultCharSize;
@@ -127,6 +128,10 @@ namespace Microsoft.Win32
 				int data = 0;
 				result = RegQueryValueEx (handle, name, IntPtr.Zero, ref type, ref data, ref size);
 				obj = data;
+			} else if (type == RegistryValueKind.QWord) {
+				long data = 0;
+				result = RegQueryValueEx (handle, name, IntPtr.Zero, ref type, ref data, ref size);
+				obj = data;
 			} else if (type == RegistryValueKind.Binary) {
 				byte[] data;
 				result = GetBinaryValue (rkey, name, type, out data, size);
@@ -162,7 +167,10 @@ namespace Microsoft.Win32
 			int result;
 			IntPtr handle = GetHandle (rkey);
 
-			if (valueKind == RegistryValueKind.DWord && type == typeof (int)) {
+			if (valueKind == RegistryValueKind.QWord && type == typeof (long)) {
+				long rawValue = (long)value;
+				result = RegSetValueEx (handle, name, IntPtr.Zero, RegistryValueKind.QWord, ref rawValue, Int64ByteSize); 
+			} else if (valueKind == RegistryValueKind.DWord && type == typeof (int)) {
 				int rawValue = (int)value;
 				result = RegSetValueEx (handle, name, IntPtr.Zero, RegistryValueKind.DWord, ref rawValue, Int32ByteSize); 
 			} else if (valueKind == RegistryValueKind.Binary && type == typeof (byte[])) {

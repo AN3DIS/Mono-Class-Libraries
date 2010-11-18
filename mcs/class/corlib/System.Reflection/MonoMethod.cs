@@ -69,7 +69,7 @@ namespace System.Reflection {
 
 		internal static MethodAttributes GetAttributes (IntPtr handle)
 		{
-			return GetMethodInfo (handle).attrs;
+			return (MethodAttributes)get_method_attributes (handle);
 		}
 
 		internal static CallingConventions GetCallingConvention (IntPtr handle)

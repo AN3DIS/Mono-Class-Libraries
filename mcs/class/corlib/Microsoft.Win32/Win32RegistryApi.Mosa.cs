@@ -84,6 +84,12 @@ namespace Microsoft.Win32
 		{
 			throw new System.NotImplementedException();
 		}
+		private static int RegSetValueEx (IntPtr keyBase,
+		string valueName, IntPtr reserved, RegistryValueKind type,
+		ref long data, int rawDataLength)
+		{
+			throw new System.NotImplementedException();
+		}
 		private static int RegQueryValueEx (IntPtr keyBase,
 		string valueName, IntPtr reserved, ref RegistryValueKind type,
 		IntPtr zero, ref int dataSize)
@@ -102,7 +108,14 @@ namespace Microsoft.Win32
 		{
 			throw new System.NotImplementedException();
 		}
+		private static int RegQueryValueEx (IntPtr keyBase,
+		string valueName, IntPtr reserved, ref RegistryValueKind type,
+		ref long data, ref int dataSize)
+		{
+			throw new System.NotImplementedException();
+		}
 
 	}
 }
+
 #endif

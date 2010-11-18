@@ -60,6 +60,10 @@ namespace System.Threading
 		
 		[MethodImplAttribute(MethodImplOptions.InternalCall)]
 		private extern static bool Monitor_wait(object obj, int ms);
+		
+#if NET_4_0 || MOONLIGHT
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		extern static void try_enter_with_atomic_var (object obj, int millisecondsTimeout, ref bool lockTaken);
 
 	}
 }

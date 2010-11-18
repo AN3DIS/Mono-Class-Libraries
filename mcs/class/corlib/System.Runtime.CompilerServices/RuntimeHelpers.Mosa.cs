@@ -37,7 +37,7 @@ namespace System.Runtime.CompilerServices
 		{
 			throw new System.NotImplementedException();
 		}
-		public static void RunModuleConstructor (IntPtr module)
+		static void RunModuleConstructor (IntPtr module)
 		{
 			throw new System.NotImplementedException();
 		}
